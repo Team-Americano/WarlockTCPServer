@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -54,10 +55,22 @@ namespace WarlockTCPServer.Managers
                     client.ReceiveBufferSize = _bufferSize;
                     var newClient = new Client(Clients.Count.ToString(), client);
                     Clients.Add(newClient);
+                    SendHello(newClient.PlayerId, client);
                 }
 
                 Thread.Sleep(_timeStep);
             }
+        }
+
+        public static void SendHello(string playerId, TcpClient client)
+        {
+            Packet helloPacket = new Packet
+            {
+                PlayerId = playerId,
+                CommandId = (short)CommandId.hello
+            };
+
+            SendPacket(client, helloPacket);
         }
 
         public static void Run()

@@ -10,7 +10,8 @@ namespace WarlockTCPServer.Managers
 {
     public enum CommandId
     {
-        test = 42
+        test = 42,
+        hello = 100
     }
 
     public static class GameManager
@@ -23,7 +24,8 @@ namespace WarlockTCPServer.Managers
         {
             _commands = new Dictionary<CommandId, Command>()
             {
-                {CommandId.test, Test }
+                {CommandId.test, Test },
+                {CommandId.hello, Hello }
             };
         }
 
@@ -52,6 +54,14 @@ namespace WarlockTCPServer.Managers
             return Task.FromResult(0);
         }
 
+        public static Task Hello(Packet packet)
+        {
+            // info for the packet
+            // create a new POCO
+            // Populate the info for packet
+            // send the packet
 
+            string idToPass = 
+        }
     }
 }
