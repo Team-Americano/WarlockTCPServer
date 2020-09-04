@@ -24,9 +24,6 @@ namespace WarlockTCPServer.Managers
         private static IPAddress _ipAddress = IPAddress.Any;
         private static TcpListener _listener;
 
-        private delegate Task Command(Packet packet);
-        private static Dictionary<CommandId, Command> _commands;
-
         private static int _timeStep = 10;
         public static bool Running { get; private set; } = false;
 
@@ -34,7 +31,6 @@ namespace WarlockTCPServer.Managers
         {
             Clients = new List<Client>();
             Packets = new List<Packet>();
-            _commands = new Dictionary<CommandId, Command>();
 
             _listener = new TcpListener(_ipAddress, _port);
 
