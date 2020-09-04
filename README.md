@@ -1,13 +1,15 @@
 # Project README Example
 
+- [User Stories and Requirements](Requirements.md)
+
 ## Project Warlock
 ---
-### We are deployed on Azure!
+### We are deployed on Azure! TODO
 
 [project url here]
 
 ---
-## TCP Server and Unity Application
+## TCP Server and Unity Application TODO
 
 ---
 
@@ -17,10 +19,12 @@ Microsoft Visual Studio Community 2017 (Version 15.5.7)
 - C#
 - ASP.Net Core
 - Unity
+- PlayFab
+- Docker 
 
 ---
 
-## Getting Started
+## Getting Started TODO
 
 Clone this repository to your local machine.
 
@@ -45,76 +49,39 @@ Unit testing is included in the AmandaFE/FrontendTesting project using the xUnit
 
 ---
 
-## Usage
-***[Provide some images of your app with brief description as title]***
+## Usage TODO
 
-### Overview of Recent Posts
-![Overview of Recent Posts](https://via.placeholder.com/500x250)
+### Game Lobby
+![Game Lobby](https://via.placeholder.com/500x250)
 
-### Creating a Post
-![Post Creation](https://via.placeholder.com/500x250)
+### Start of Game
+![Start of Game](https://via.placeholder.com/500x250)
 
-### Enriching a Post
-![Enriching Post](https://via.placeholder.com/500x250)
+### Mid Game
+![Mid Game](https://via.placeholder.com/500x250)
 
-### Viewing Post Details
-![Details of Post](https://via.placeholder.com/500x250)
-
----
-## Data Flow (Frontend, Backend, REST API)
-***[Add a clean and clear explanation of what the data flow is. Walk me through it.]***
-![Data Flow Diagram](/assets/img/Flowchart.png)
+### Game End
+![Game End](https://via.placeholder.com/500x250)
 
 ---
-## Data Model
-
-### Overall Project Schema
-***[Add a description of your DB schema. Explain the relationships to me.]***
-![Database Schema](/assets/img/ERD.png)
+## Data Flow TODO
+![Data Flow Diagram](/Assets/img/Flowchart.png)
 
 ---
-## Model Properties and Requirements
 
-### Blog
-
-| Parameter | Type | Required |
-| --- | --- | --- |
-| ID  | int | YES |
-| Summary | string | YES |
-| Content | string | YES |
-| Tags | string(s) | NO |
-| Picture | img jpeg/png | NO |
-| Sentiment | float | NO |
-| Keywords | string(s) | NO |
-| Related Posts | links | NO |
-| Date | date/time object | YES |
-
-
-### User
-
-| Parameter | Type | Required |
-| --- | --- | --- |
-| ID  | int | YES |
-| Name/Author | string | YES |
-| Posts | list | YES |
+## UML Diagrams TODO
 
 ---
 
 ## Change Log
-***[The change log will list any changes made to the code base. This includes any changes from TA/Instructor feedback]***  
-1.4: *Added OAuth for MySpace* - 23 Jan 2003  
-1.3: *Changed email handler to Alta Vista, fixed issue with styling on Netscape Navigator browser.* - 21 Dec 1999  
-1.2: *Fixed bug where pages would not load due to temp data* - 16 Jun 1998  
-1.1: *Added ability for user to change photos on a post* - 12 May 1998  
+- 0.10 - Inital Repo Setup with README 
 
 ---
 
 ## Authors
-Albus Dumbbledore
-Igor Karkaroff
-Minerva McGonagall
-Leta Lestrange
-Gellert Grindelwald
+- Bade Habib
+- Peyton Cysewski
+- Trevor Stubbs
 
 ---
 
