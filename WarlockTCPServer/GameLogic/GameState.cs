@@ -4,7 +4,17 @@ using System.Text;
 
 namespace WarlockTCPServer.GameLogic
 {
-    class GameState
+    public class GameState
     {
+        public short RoundCounter { get; set; }
+        public Player Player1 { get; set; }
+        public Player Player2 { get; set; }
+        public Actor.Actor[] DrawDeck { get; set; }
+        public Actor.Actor[] DiscardDeck { get; set; }
+
+        public GameState()
+        {
+
+        }
     }
 }
