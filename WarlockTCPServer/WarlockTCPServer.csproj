@@ -8,7 +8,10 @@
   <ItemGroup>
     <Folder Include="GameLogic\Actor\Actions\" />
     <Folder Include="GameLogic\Actor\Effects\" />
-    <Folder Include="Primitives\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

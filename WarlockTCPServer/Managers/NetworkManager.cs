@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.CompilerServices;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using WarlockTCPServer.NetworkClasses;
 
 namespace WarlockTCPServer.Managers
 {
@@ -52,11 +54,10 @@ namespace WarlockTCPServer.Managers
                 if (_listener.Pending())
                 {
                     var client = _listener.AcceptTcpClient();
-                    // var networkStream = client.GetStream();
                     client.SendBufferSize = _bufferSize;
                     client.ReceiveBufferSize = _bufferSize;
-                    Clients.Add(client);
-                    // Instantiate client before adding to list
+                    var newClient = new Client(Clients.Count.ToString(), client);
+                    Clients.Add(newClient);
                 }
 
                 Thread.Sleep(_timeStep);
