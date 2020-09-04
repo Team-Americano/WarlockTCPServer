@@ -1,8 +1,7 @@
-# Project README Example
+# Project Warlock
 
 - [User Stories and Requirements](Requirements.md)
 
-## Project Warlock
 ---
 ### We are deployed on Azure! TODO
 
