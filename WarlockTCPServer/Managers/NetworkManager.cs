@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -24,9 +25,6 @@ namespace WarlockTCPServer.Managers
         private static IPAddress _ipAddress = IPAddress.Any;
         private static TcpListener _listener;
 
-        private delegate Task Command(Packet packet);
-        private static Dictionary<CommandId, Command> _commands;
-
         private static int _timeStep = 10;
         public static bool Running { get; private set; } = false;
 
@@ -34,7 +32,6 @@ namespace WarlockTCPServer.Managers
         {
             Clients = new List<Client>();
             Packets = new List<Packet>();
-            _commands = new Dictionary<CommandId, Command>();
 
             _listener = new TcpListener(_ipAddress, _port);
 
@@ -58,10 +55,22 @@ namespace WarlockTCPServer.Managers
                     client.ReceiveBufferSize = _bufferSize;
                     var newClient = new Client(Clients.Count.ToString(), client);
                     Clients.Add(newClient);
+                    SendHello(newClient.PlayerId, client);
                 }
 
                 Thread.Sleep(_timeStep);
             }
+        }
+
+        public static void SendHello(string playerId, TcpClient client)
+        {
+            Packet helloPacket = new Packet
+            {
+                PlayerId = playerId,
+                CommandId = (short)CommandId.hello
+            };
+
+            SendPacket(client, helloPacket);
         }
 
         public static void Run()
