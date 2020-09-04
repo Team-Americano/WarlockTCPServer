@@ -70,6 +70,8 @@ namespace WarlockTCPServer.Managers
                 CommandId = (short)CommandId.hello
             };
 
+            Console.WriteLine($"Sending Hello to {playerId}");
+
             SendPacket(client, helloPacket);
         }
 
