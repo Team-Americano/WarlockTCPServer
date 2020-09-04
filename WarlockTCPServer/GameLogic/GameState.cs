@@ -12,9 +12,10 @@ namespace WarlockTCPServer.GameLogic
         public Actor.Actor[] DrawDeck { get; set; }
         public Actor.Actor[] DiscardDeck { get; set; }
 
-        public GameState()
+        public GameState(Player player1, Player player2)
         {
-
+            Player1 = player1;
+            Player2 = player2;
         }
     }
 }

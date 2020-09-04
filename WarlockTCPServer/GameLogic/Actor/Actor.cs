@@ -55,7 +55,6 @@ namespace WarlockTCPServer.GameLogic.Actor
                 short attack,
                 short speed,
                 short precision,
-                string origin,
                 string @class
             )
         {
@@ -65,7 +64,6 @@ namespace WarlockTCPServer.GameLogic.Actor
             Attack = attack;
             Speed = speed;
             Precision = precision;
-            Origin = origin;
             Class = @class;
         }
 

@@ -13,8 +13,10 @@ namespace WarlockTCPServer.Constants
         #endregion
 
         #region Actor Distribution
-        // if set to true, then the actor amount in each deck will be as equal as possible. If not, then it will be random.
-        public const bool EqualActors = false;
+        // if set to true, then the actor aspects of Origin in each deck will be as equal as possible. If not, then it will be randomized.
+        public const bool EqualOriginDistribution = true;
+        // if set to true, then the actor aspects of Class in each deck will be as equal as possible. If not, then it will be randomized.
+        public const bool EqualClassDistribution = true;
         #endregion
 
         #region Class Presets
@@ -61,5 +63,25 @@ namespace WarlockTCPServer.Constants
         public const short StalkerPrecision = 25;
         #endregion
         #endregion
+
+        public enum ActorClass
+        {
+            Brute,
+            Warden,
+            Sorcerer,
+            Enchanter,
+            Trapper,
+            Stalker
+        }
+
+        public enum ActorOrigin
+        {
+            Undead,
+            Glacial,
+            Infernal,
+            Nature,
+            Aberrant,
+            Aquatic
+        }
     }
 }

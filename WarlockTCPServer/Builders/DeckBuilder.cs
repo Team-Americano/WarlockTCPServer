@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using WarlockTCPServer.GameLogic.Actor;
+using static WarlockTCPServer.Constants.DeckConstants;
 using static WarlockTCPServer.Builders.ActorBuilder;
 
 namespace WarlockTCPServer.Builders
@@ -9,6 +10,7 @@ namespace WarlockTCPServer.Builders
     public class DeckBuilder
     {
         private int DeckSize;
+
         public DeckBuilder(int deckSize)
         {
             DeckSize = deckSize;
@@ -16,22 +18,40 @@ namespace WarlockTCPServer.Builders
 
         public Actor[] Build()
         {
-            Actor[] deck = new Actor[DeckSize];
-            for (short i = 0; i < deck.Length; i++)
-            {
-                deck[i] = ActorBuilder.CreateActor((short)(i + 1), ActorClass;
-            }
+            Actor[] deck;
+            if (EqualClassDistribution)
+                deck = CreateEqualDeck();
+            else
+                deck = CreateRandomDeck();
+
+            if (EqualOriginDistribution)
+
+
+
             return deck;
         }
 
-        private enum ActorClass
+        private Actor[] CreateEqualDeck()
         {
-            Brute,
-            Warden,
-            Sorcerer,
-            Enchanter,
-            Trapper,
-            Stalker
+            Actor[] deck = new Actor[DeckSize];
+            Random random = new Random();
+            int offset = random.Next(6);
+            for (int i = 0; i < DeckSize; i++)
+            {
+                deck[i] = CreateActor((short)(i + 1), (ActorClass)(offset + i));
+            }
+            return deck;
+        }
+        private Actor[] CreateRandomDeck()
+        {
+            Actor[] deck = new Actor[DeckSize];
+            Random random = new Random();
+            int offset = random.Next(6);
+            for (int i = 0; i < DeckSize; i++)
+            {
+                deck[i] = CreateActor((short)(i + 1), (ActorClass)(random.Next(6)));
+            }
+            return deck;
         }
     }
 }
