@@ -16,7 +16,7 @@ namespace WarlockTCPServer.GameLogic.Actor
         public short Speed { get; set; }
         public short Precision { get; set; }
         public short ManaCost { get; set; }
-        public short Rarity { get; set; }
+        public string Rarity { get; set; }
         public Action ActorAction { get; set; }
 
         public Actor()
@@ -36,7 +36,7 @@ namespace WarlockTCPServer.GameLogic.Actor
             short speed,
             short precision,
             short manaCost,
-            short rarity,
+            string rarity,
             Action actorAction
         )
         {

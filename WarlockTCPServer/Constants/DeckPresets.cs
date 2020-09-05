@@ -13,7 +13,7 @@ namespace WarlockTCPServer.Constants
         };
 
         #region Base Deck
-        public static List<(Characters, int)> BaseDeck = new List<(Characters character, int amount)>
+        public static List<(Characters character, int amount)> BaseDeck = new List<(Characters character, int amount)>
         {   // Undead
             (Characters.Skeleton, 3),
             (Characters.Zombie, 3),

@@ -10,5 +10,10 @@ namespace WarlockTCPServer.GameLogic
         public Player Player1 { get; set; }
         public Player Player2 { get; set; }
         public Deck Deck { get; set; }
+
+        public void Initialize()
+        {
+            Deck.Fill("BaseDeck");
+        }
     }
 }
