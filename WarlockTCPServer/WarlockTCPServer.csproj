@@ -9,6 +9,9 @@
     <Compile Remove="Primitives\**" />
     <EmbeddedResource Remove="Primitives\**" />
     <None Remove="Primitives\**" />
+    <Folder Include="GameLogic\Actor\Actions\" />
+    <Folder Include="GameLogic\Actor\Effects\" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

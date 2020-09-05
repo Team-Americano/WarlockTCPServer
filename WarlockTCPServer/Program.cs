@@ -1,4 +1,5 @@
 ﻿using System;
+using WarlockTCPServer.Managers;
 
 namespace WarlockTCPServer
 {
@@ -7,6 +8,8 @@ namespace WarlockTCPServer
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+            NetworkManager.Start();            
         }
     }
 }
