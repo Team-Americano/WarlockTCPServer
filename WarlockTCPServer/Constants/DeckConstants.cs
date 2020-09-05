@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WarlockTCPServer.GameLogic.Actor;
 
 namespace WarlockTCPServer.Constants
 {
     public static class DeckConstants
     {
-        #region Characters
+        #region Character Registry
         public enum Characters
         {
             // Undead
@@ -54,22 +55,80 @@ namespace WarlockTCPServer.Constants
         }
         #endregion
 
-        #region Origins
+        #region Character Associations
+        public static Dictionary<Characters, (ActorOrigins, ActorClasses, ActorRarities)> CharacterLegend = new Dictionary<Characters, (ActorOrigins, ActorClasses, ActorRarities)>
+        {
+            // Undead
+            { Characters.Skeleton, (ActorOrigins.Undead, ActorClasses.Warden, ActorRarities.Common) },
+            { Characters.Zombie, (ActorOrigins.Undead, ActorClasses.Brute, ActorRarities.Common) },
+            { Characters.Ghost, (ActorOrigins.Undead, ActorClasses.Sorcerer, ActorRarities.Common) },
+            { Characters.Wraith, (ActorOrigins.Undead, ActorClasses.Sorcerer, ActorRarities.Uncommon) },
+            { Characters.Revenant, (ActorOrigins.Undead, ActorClasses.Warden, ActorRarities.Uncommon) },
+            { Characters.Lich, (ActorOrigins.Undead, ActorClasses.Enchanter, ActorRarities.Rare) },
+            // Glacial
+            { Characters.Snowfriend, (ActorOrigins.Glacial, ActorClasses.Enchanter, ActorRarities.Common) },
+            { Characters.Ice_Wasp, (ActorOrigins.Glacial, ActorClasses.Stalker, ActorRarities.Common) },
+            { Characters.Frost_Sprite, (ActorOrigins.Glacial, ActorClasses.Sorcerer, ActorRarities.Common) },
+            { Characters.Ice_Pike, (ActorOrigins.Glacial, ActorClasses.Brute, ActorRarities.Uncommon) },
+            { Characters.Glacial_Guard, (ActorOrigins.Glacial, ActorClasses.Warden, ActorRarities.Uncommon) },
+            { Characters.Ice_Drake, (ActorOrigins.Glacial, ActorClasses.Warden, ActorRarities.Rare) },
+            // Infernal
+            { Characters.Lemure, (ActorOrigins.Infernal, ActorClasses.Brute, ActorRarities.Common) },
+            { Characters.Imp, (ActorOrigins.Infernal, ActorClasses.Stalker, ActorRarities.Common) },
+            { Characters.Inferno, (ActorOrigins.Infernal, ActorClasses.Brute, ActorRarities.Common) },
+            { Characters.Incubus, (ActorOrigins.Infernal, ActorClasses.Enchanter, ActorRarities.Uncommon) },
+            { Characters.Gobbler, (ActorOrigins.Infernal, ActorClasses.Trapper, ActorRarities.Uncommon) },
+            { Characters.Pit_Lord, (ActorOrigins.Infernal, ActorClasses.Brute, ActorRarities.Rare) },
+            // Bestial
+            { Characters.Dire_Wolf, (ActorOrigins.Bestial, ActorClasses.Stalker, ActorRarities.Common) },
+            { Characters.Bully_Toad, (ActorOrigins.Bestial, ActorClasses.Brute, ActorRarities.Common) },
+            { Characters.Black_Asp, (ActorOrigins.Bestial, ActorClasses.Stalker, ActorRarities.Common) },
+            { Characters.Spider_Queen, (ActorOrigins.Bestial, ActorClasses.Trapper, ActorRarities.Uncommon) },
+            { Characters.Arch_Druid, (ActorOrigins.Bestial, ActorClasses.Enchanter, ActorRarities.Uncommon) },
+            { Characters.Vine_Behemoth, (ActorOrigins.Bestial, ActorClasses.Trapper, ActorRarities.Rare) },
+            // Aberrant
+            { Characters.Slime, (ActorOrigins.Aberrant, ActorClasses.Brute, ActorRarities.Common) },
+            { Characters.Gazer, (ActorOrigins.Aberrant, ActorClasses.Sorcerer, ActorRarities.Common) },
+            { Characters.Morlock, (ActorOrigins.Aberrant, ActorClasses.Brute, ActorRarities.Common) },
+            { Characters.Deep_Hound, (ActorOrigins.Aberrant, ActorClasses.Sorcerer, ActorRarities.Uncommon) },
+            { Characters.Mind_Eater, (ActorOrigins.Aberrant, ActorClasses.Stalker, ActorRarities.Uncommon) },
+            { Characters.Deep_Tyrant, (ActorOrigins.Aberrant, ActorClasses.Sorcerer, ActorRarities.Rare) },
+            // Aquatic
+            { Characters.Mer_Guard, (ActorOrigins.Aquatic, ActorClasses.Warden, ActorRarities.Common) },
+            { Characters.Sea_Worm, (ActorOrigins.Aquatic, ActorClasses.Stalker, ActorRarities.Common) },
+            { Characters.Man_O_War, (ActorOrigins.Aquatic, ActorClasses.Trapper, ActorRarities.Common) },
+            { Characters.Chomper, (ActorOrigins.Aquatic, ActorClasses.Brute, ActorRarities.Uncommon) },
+            { Characters.Kraken, (ActorOrigins.Aquatic, ActorClasses.Trapper, ActorRarities.Uncommon) },
+            { Characters.Trident_King, (ActorOrigins.Aquatic, ActorClasses.Warden, ActorRarities.Rare) }
+        };
+        #endregion
+
+        #region Origins and Stats
         public enum ActorOrigins
         {
-            Undead,
+            Undead = 1,
             Glacial,
             Infernal,
-            Nature,
+            Bestial,
             Aberrant,
             Aquatic
         }
+
+        public static Dictionary<ActorOrigins, (short health, short defense, short attack, short speed, short precison)> 
+            BaseOrigins = new Dictionary<ActorOrigins, (short health, short defense, short attack, short speed, short precison)>
+        {
+            { ActorOrigins.Undead, (0, 0, 0, 0, 0) },
+            { ActorOrigins.Undead, (0, 0, 0, 0, 0) },
+            { ActorOrigins.Undead, (0, 0, 0, 0, 0) },
+            { ActorOrigins.Undead, (0, 0, 0, 0, 0) },
+            { ActorOrigins.Undead, (0, 0, 0, 0, 0) },
+        };
         #endregion
 
-        #region Classes
+        #region Classes and Stats
         public enum ActorClasses
         {
-            Brute,
+            Brute = 1,
             Warden,
             Sorcerer,
             Enchanter,
@@ -77,6 +136,16 @@ namespace WarlockTCPServer.Constants
             Stalker
         }
         #endregion
+
+        #region Rarities and Stats
+        public enum ActorRarities
+        {
+            Common = 1,
+            Uncommon,
+            Rare
+        }
+        #endregion
+
 
 
         #region Defunct

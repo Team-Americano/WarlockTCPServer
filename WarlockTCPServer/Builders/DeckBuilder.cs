@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using WarlockTCPServer.GameLogic.Actor;
 using static WarlockTCPServer.Constants.DeckConstants;
 using static WarlockTCPServer.Constants.DeckPresets;
-using static WarlockTCPServer.Builders.ActorBuilder;
 
 namespace WarlockTCPServer.Builders
 {
@@ -22,13 +20,19 @@ namespace WarlockTCPServer.Builders
         }
         public Actor[] Build(List<(Characters, int)> deckScaffold)
         {
+            var random = new Random();
+            short cardId = 0;
             for (int i = 0; i < deckScaffold.Count; i++)
             {
-                for (int j = 0; j < length; j++)
+                for (int j = 0; j < deckScaffold[i].Item2; j++)
                 {
-
+                    cardId++;
+                    var actor = ActorBuilder.Build(deckScaffold[i].Item1, cardId);
+                    int randomIndex = random.Next(RawDeck.Count);
+                    RawDeck.Insert(randomIndex, actor);
                 }
             }
+            FinalDeck = RawDeck.ToArray();
             return FinalDeck;
         }
         #endregion
