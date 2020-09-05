@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarlockTCPServer.GameLogic.Actor;
+using WarlockTCPServer.GameLogic;
 using static WarlockTCPServer.Constants.DeckConstants;
 using static WarlockTCPServer.Constants.DeckPresets;
 

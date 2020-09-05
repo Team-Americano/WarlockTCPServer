@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WarlockTCPServer.GameLogic
+﻿namespace WarlockTCPServer.GameLogic
 {
     public class GameState
     {

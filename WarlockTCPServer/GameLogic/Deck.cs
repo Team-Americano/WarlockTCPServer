@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using WarlockTCPServer.Builders;
 using static WarlockTCPServer.Constants.DeckConstants;
 
@@ -9,8 +7,8 @@ namespace WarlockTCPServer.GameLogic
 {
     public class Deck
     {
-        private Actor.Actor[] DrawPile { get; set; }
-        private Actor.Actor[] DiscardPile { get; set; }
+        private Actor[] DrawPile { get; set; }
+        private Actor[] DiscardPile { get; set; }
 
         //private Actor.Actor[] ExilePile { get; set; } // stretch goal functionality
 
@@ -27,7 +25,7 @@ namespace WarlockTCPServer.GameLogic
             DrawPile = deckBuilder.Build(deckScaffold);
         }
 
-        public void Fill(Actor.Actor[] customDeck)
+        public void Fill(Actor[] customDeck)
         {
             DrawPile = customDeck;
         }
@@ -42,7 +40,5 @@ namespace WarlockTCPServer.GameLogic
         {
 
         }
-
-        public Actor[]
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WarlockTCPServer.GameLogic.Actor;
+﻿using System.Collections.Generic;
 
 namespace WarlockTCPServer.Constants
 {

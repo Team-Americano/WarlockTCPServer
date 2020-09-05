@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Primitives\" />
+    <Compile Remove="Primitives\**" />
+    <EmbeddedResource Remove="Primitives\**" />
+    <None Remove="Primitives\**" />
   </ItemGroup>
 
 </Project>

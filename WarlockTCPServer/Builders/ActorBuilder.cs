@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WarlockTCPServer.GameLogic.Actor;
+using WarlockTCPServer.GameLogic;
 using static WarlockTCPServer.Constants.DeckConstants;
 
 namespace WarlockTCPServer.Builders
@@ -30,10 +30,6 @@ namespace WarlockTCPServer.Builders
             Actor actor = new Actor(cardId, origin, @class, name, health, defense, attack, speed, precision, manaCost, rarity, null);
             return actor;
         }
-
-
-
-
 
 
         #region Defunct

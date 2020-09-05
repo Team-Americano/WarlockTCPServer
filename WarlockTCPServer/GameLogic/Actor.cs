@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace WarlockTCPServer.GameLogic.Actor
+namespace WarlockTCPServer.GameLogic
 {
     public class Actor
     {
