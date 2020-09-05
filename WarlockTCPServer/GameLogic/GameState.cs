@@ -9,8 +9,9 @@ namespace WarlockTCPServer.GameLogic
         public short RoundCounter { get; set; }
         public Player Player1 { get; set; }
         public Player Player2 { get; set; }
-        public Actor.Actor[] DrawDeck { get; set; }
-        public Actor.Actor[] DiscardDeck { get; set; }
+        public Deck Deck { get; set; }
+
+        //public Deck DiscardDeck { get; set; } // experimenting with having it build into the Deck
 
         public GameState(Player player1, Player player2)
         {

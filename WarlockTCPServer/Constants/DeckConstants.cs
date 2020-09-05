@@ -64,6 +64,10 @@ namespace WarlockTCPServer.Constants
         #endregion
         #endregion
 
+        public const int CommonFrequency = 18; // 3 copies of 18 unique common cards
+        public const int UncommonFrequency = 12; 
+        public const int RareFrequency = 6;
+
         public enum ActorClass
         {
             Brute,

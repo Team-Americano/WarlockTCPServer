@@ -18,40 +18,128 @@ namespace WarlockTCPServer.Builders
 
         public Actor[] Build()
         {
-            Actor[] deck;
+            Actor[] deck = new Actor[DeckSize];
             if (EqualClassDistribution)
-                deck = CreateEqualDeck();
+                SetEqualClasses(deck);
             else
-                deck = CreateRandomDeck();
+                SetRandomClasses(deck);
 
             if (EqualOriginDistribution)
+                SetEqualOrigins(deck);
+            else
+                SetRandomOrigins(deck);
 
-
+            BalanceCosts(deck);
 
             return deck;
         }
 
-        private Actor[] CreateEqualDeck()
+        #region Adding Class Types
+        private void SetEqualClasses(Actor[] deck)
         {
-            Actor[] deck = new Actor[DeckSize];
-            Random random = new Random();
-            int offset = random.Next(6);
-            for (int i = 0; i < DeckSize; i++)
+            List<int> classes = RandomOrderEqualList(deck.Length, 0, 6); // 0, 1, 2, 3, 4, 5
+            for (int i = 0; i < deck.Length; i++)
             {
-                deck[i] = CreateActor((short)(i + 1), (ActorClass)(offset + i));
+                int @class = classes[i];
+                deck[i] = CreateActor((short)(i + 1), (ActorClass)@class);
             }
-            return deck;
         }
-        private Actor[] CreateRandomDeck()
+        private void SetRandomClasses(Actor[] deck)
         {
-            Actor[] deck = new Actor[DeckSize];
             Random random = new Random();
-            int offset = random.Next(6);
-            for (int i = 0; i < DeckSize; i++)
+            for (int i = 0; i < deck.Length; i++)
             {
                 deck[i] = CreateActor((short)(i + 1), (ActorClass)(random.Next(6)));
             }
-            return deck;
+        }
+        #endregion
+
+        #region Adding Origin Types
+        private void SetEqualOrigins(Actor[] deck)
+        {
+            List<int> origins = RandomOrderEqualList(deck.Length, 0, 6); // 0, 1, 2, 3, 4, 5
+            for (int i = 0; i < deck.Length; i++)
+            {
+                int origin = origins[i];
+                deck[i].Origin = ((ActorOrigin)origin).ToString();
+            }
+        }
+
+        private void SetRandomOrigins(Actor[] deck)
+        {
+            Random random = new Random();
+            for (int i = 0; i < deck.Length; i++)
+            {
+                deck[i].Origin = ((ActorOrigin)random.Next(6)).ToString();
+            }
+        }
+        #endregion
+
+        private void BalanceCosts(Actor[] deck)
+        {
+            Dictionary<string, int> classes = new Dictionary<string, int>();
+            foreach (var card in deck)
+            {
+                if (classes.ContainsKey(card.Class))
+                    classes[card.Class]++;
+                else
+                    classes.Add(card.Class, 0);
+            }
+            
+        }
+
+        /// <summary>
+        /// Creates a helpful list for randomly assigning values. Useful for enums.
+        /// </summary>
+        /// <param name="length">Length of list.</param>
+        /// <param name="min">Inclusive lower bound.</param>
+        /// <param name="max">Exclusive upper bound.</param>
+        /// <returns></returns>
+        private List<int> RandomOrderEqualList(int length, int min, int max)
+        {
+            int distSpread = max - min;
+            int remainderArea = length % distSpread;
+            Random rand = new Random();
+
+            List<int> list = new List<int>(length);
+            List<int> prevAdds = new List<int>();
+            Dictionary<int, int> tracker = new Dictionary<int, int>(distSpread);
+            // setting up a group of integers to pull from to guarantee equal distribution
+            for (int i = min; i < max; i++)
+            {
+                tracker.Add(i, (int)(length / distSpread));
+            }
+            // pulling from the collection we made to add to the list in a random order
+            int index = 0;
+            while (tracker.Count > 0)
+            {
+                int num = rand.Next(min, max);
+                if (tracker.ContainsKey(num))
+                {
+                    list[index] = num;
+                    index++;
+                    tracker[num]--;
+                    if (tracker[num] == 0)
+                    {
+                        tracker.Remove(num);
+                    }
+                }
+            }
+            // if the range of integers does not fit evenly, this adds the remaining amount at random, without any duplicates
+            while (index < length)
+            {
+                int num = rand.Next(min, max);
+                if (!prevAdds.Contains(num))
+                {
+                    list[index] = num;
+                    prevAdds.Add(num);
+                    index++;
+                }
+            }
+            // final shuffle, possibly redundant, but feels nice
+            list.Reverse();
+
+            return list;
         }
     }
 }
