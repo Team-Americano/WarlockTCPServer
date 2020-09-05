@@ -7,10 +7,11 @@ namespace WarlockTCPServer.Constants
 {
     public static class DeckPresets
     {
-        public enum PrebuiltDecks
+        public static Dictionary<string, List<(Characters, int)>> Presets = new Dictionary<string, List<(Characters, int)>>
         {
-            BaseDeck = 1
-        }
+            { "BaseDeck", BaseDeck }
+        };
+
         #region Base Deck
         public static List<(Characters, int)> BaseDeck = new List<(Characters character, int amount)>
         {   // Undead
