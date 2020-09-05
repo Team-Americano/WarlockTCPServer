@@ -10,7 +10,7 @@ namespace WarlockTCPServer.Builders
     {
 
         private Actor[] FinalDeck;
-        private List<Actor> RawDeck;
+        private List<Actor> RawDeck = new List<Actor>();
 
         #region Builder Functions
         public Actor[] Build(string deckName)

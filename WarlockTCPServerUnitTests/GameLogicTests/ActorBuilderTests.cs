@@ -11,22 +11,21 @@ namespace WarlockTCPServerUnitTests.GameLogicTests
         [Fact]
         public void MakesTheCorrectActor()
         {
-            Actor expected = new Actor(1, "Undead", "Warden", "Skeleton", 70, 50, 25, 20, 5, 1, "Common", null);
             Actor actual = Build(Characters.Skeleton, 1);
 
             Assert.NotNull(actual);
-            Assert.Equal(expected.CardId, actual.CardId);
-            Assert.Equal(expected.Origin, actual.Origin);
-            Assert.Equal(expected.Class, actual.Class);
-            Assert.Equal(expected.Name, actual.Name);
-            Assert.Equal(expected.Health, actual.Health);
-            Assert.Equal(expected.Attack, actual.Attack);
-            Assert.Equal(expected.Defense, actual.Defense);
-            Assert.Equal(expected.Speed, actual.Speed);
-            Assert.Equal(expected.Precision, actual.Precision);
-            Assert.Equal(expected.ManaCost, actual.ManaCost);
-            Assert.Equal(expected.Rarity, actual.Rarity);
-            Assert.Equal(expected.ActorAction, actual.ActorAction);
+            Assert.Equal(1, actual.CardId);
+            Assert.Equal("Undead", actual.Origin);
+            Assert.Equal("Warden", actual.Class);
+            Assert.Equal("Skeleton", actual.Name);
+            Assert.Equal(70, actual.Health);
+            Assert.Equal(50, actual.Defense);
+            Assert.Equal(25, actual.Attack);
+            Assert.Equal(20, actual.Speed);
+            Assert.Equal(5, actual.Precision);
+            Assert.Equal(1, actual.ManaCost);
+            Assert.Equal("Common", actual.Rarity);
+            Assert.Equal(null, actual.ActorAction);
         }
 
         [Fact]
