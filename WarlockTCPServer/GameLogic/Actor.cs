@@ -19,7 +19,7 @@ namespace WarlockTCPServer.GameLogic
 
         public Actor()
         {
-
+            // explicitly empty constructor
         }
 
         public Actor
