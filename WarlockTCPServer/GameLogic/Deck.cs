@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static WarlockTCPServer.Constants.DeckConstants;
 
 namespace WarlockTCPServer.GameLogic
 {
@@ -9,7 +10,7 @@ namespace WarlockTCPServer.GameLogic
         private Actor.Actor[] DrawPile { get; set; }
         private Actor.Actor[] DiscardPile { get; set; }
 
-        public void Fill()
+        public void Fill(List<(Characters, int)> deckBuild)
         {
 
         }

@@ -6,6 +6,7 @@ namespace WarlockTCPServer.Constants
 {
     public static class DeckConstants
     {
+        #region Characters
         public enum Characters
         {
             // Undead
@@ -42,8 +43,41 @@ namespace WarlockTCPServer.Constants
             Morlock,            // Aberrant Brute
             Deep_Hound,         // Aberrrant Sorcerer
             Mind_Eater,         // Aberrant Stalker
-            Deep_Tyrant         // Aberrant Sorcerer
+            Deep_Tyrant,        // Aberrant Sorcerer
+            // Aquatic
+            Mer_Guard,          // Aquatic Warden
+            Sea_Worm,           // Aquatic Stalker
+            Man_O_War,          // Aquatic Trapper
+            Chomper,            // Aquatic Brute
+            Kraken,             // Aquatic Trapper
+            Trident_King        // Aquatic Warden
         }
+        #endregion
+
+        #region Origins
+        public enum ActorOrigins
+        {
+            Undead,
+            Glacial,
+            Infernal,
+            Nature,
+            Aberrant,
+            Aquatic
+        }
+        #endregion
+
+        #region Classes
+        public enum ActorClasses
+        {
+            Brute,
+            Warden,
+            Sorcerer,
+            Enchanter,
+            Trapper,
+            Stalker
+        }
+        #endregion
+
 
         #region Defunct
         //#region Player Deck Arrangements
@@ -107,26 +141,6 @@ namespace WarlockTCPServer.Constants
         ////public const int CommonFrequency = 18; // 3 copies of 18 unique common cards
         ////public const int UncommonFrequency = 12; 
         ////public const int RareFrequency = 6;
-
-        //public enum ActorClasses
-        //{
-        //    Brute,
-        //    Warden,
-        //    Sorcerer,
-        //    Enchanter,
-        //    Trapper,
-        //    Stalker
-        //}
-
-        //public enum ActorOrigins
-        //{
-        //    Undead,
-        //    Glacial,
-        //    Infernal,
-        //    Nature,
-        //    Aberrant,
-        //    Aquatic
-        //}
         #endregion
     }
 }
