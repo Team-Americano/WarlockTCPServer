@@ -10,6 +10,7 @@
         public void Initialize()
         {
             Deck.Fill("BaseDeck");
+            Deck.Queue();
         }
     }
 }
