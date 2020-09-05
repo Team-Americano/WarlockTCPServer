@@ -9,9 +9,19 @@ namespace WarlockTCPServer.GameLogic
         private Actor.Actor[] DrawPile { get; set; }
         private Actor.Actor[] DiscardPile { get; set; }
 
-        public Deck(Actor.Actor[] cards)
+        public void Fill()
         {
-            DrawPile = cards;
+
+        }
+
+        public void Shuffle()
+        {
+
+        }
+
+        public void Reshuffle()
+        {
+
         }
     }
 }

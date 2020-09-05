@@ -19,7 +19,6 @@ namespace WarlockTCPServer.GameLogic.Actor
         public short Rarity { get; set; }
         public Action ActorAction { get; set; }
 
-        #region Constructors
         public Actor()
         {
 
@@ -28,30 +27,31 @@ namespace WarlockTCPServer.GameLogic.Actor
         public Actor
         (
             short cardId,
+            string origin,
+            string @class,
+            string name,
             short health,
             short defense,
             short attack,
             short speed,
             short precision,
             short manaCost,
-            Action actorAction,
-            string origin,
-            string @class,
-            short rarity
+            short rarity,
+            Action actorAction
         )
         {
             CardId = cardId;
+            Origin = origin;
+            Class = @class;
+            Name = name;
             Health = health;
             Defense = defense;
             Attack = attack;
             Speed = speed;
             Precision = precision;
             ManaCost = manaCost;
-            ActorAction = actorAction;
-            Origin = origin;
-            Class = @class;
             Rarity = rarity;
+            ActorAction = actorAction;
         }
-        #endregion
     }
 }
