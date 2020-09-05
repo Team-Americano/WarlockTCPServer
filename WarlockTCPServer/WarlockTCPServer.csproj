@@ -6,8 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="GameLogic\Actor\Actions\" />
-    <Folder Include="GameLogic\Actor\Effects\" />
     <Folder Include="Primitives\" />
   </ItemGroup>
 

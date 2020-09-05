@@ -4,6 +4,7 @@ using System.Text;
 using WarlockTCPServer.Builders;
 using static WarlockTCPServer.Constants.DeckConstants;
 
+
 namespace WarlockTCPServer.GameLogic
 {
     public class Deck
@@ -41,5 +42,7 @@ namespace WarlockTCPServer.GameLogic
         {
 
         }
+
+        public Actor[]
     }
 }
