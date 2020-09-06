@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WarlockTCPServer.GameLogic
+﻿namespace WarlockTCPServer.GameLogic
 {
-    class GameState
+    public class GameState
     {
+        public short RoundCounter { get; set; }
+        public Player Player1 { get; set; }
+        public Player Player2 { get; set; }
+        public Deck Deck { get; set; }
+
+        public void Initialize()
+        {
+            Deck.Fill("BaseDeck");
+            Deck.Shuffle();
+            Deck.Queue();
+        }
     }
 }
