@@ -9,6 +9,6 @@ namespace WarlockTCPServer.NetworkClasses
     {
         public short CommandId { get; set; }
         public string PlayerId { get; set; }
-        public POCO POCO { get; set; }
+        public string POCOJson { get; set; }
     }
 }

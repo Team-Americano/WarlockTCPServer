@@ -11,6 +11,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using WarlockTCPServer.NetworkClasses;
+using WarlockTCPServer.POCOs;
 
 namespace WarlockTCPServer.Managers
 {
@@ -20,12 +21,12 @@ namespace WarlockTCPServer.Managers
 
         private static int _bufferSize = 1024 * 2;
         public static List<Packet> Packets { get; set; }
-        private static int _maxPlayers = 2;
+        private static int _maxPlayers = 1;
         private static int _port = 28852;
         private static IPAddress _ipAddress = IPAddress.Any;
         private static TcpListener _listener;
-
-        private static int _timeStep = 10;
+        
+        private static int _timeStep = 30;
         public static bool Running { get; private set; } = false;
 
         public static void Start()
@@ -83,6 +84,7 @@ namespace WarlockTCPServer.Managers
             {
                 ReceivePackets();
                 CheckForDisconnects();
+                GameManager.RunGameLoop();
                 Thread.Sleep(_timeStep);
             }
 
@@ -101,7 +103,7 @@ namespace WarlockTCPServer.Managers
                     client.GetStream().Read(incoming, 0, incoming.Length);
 
                     string incomingStr = Encoding.UTF8.GetString(incoming);
-                    Packet packet = JsonConvert.DeserializeObject<Packet>(incomingStr); // Install newtonsoft
+                    Packet packet = JsonConvert.DeserializeObject<Packet>(incomingStr);
 
                     Packets.Add(packet);
                 }
