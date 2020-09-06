@@ -28,12 +28,12 @@ namespace WarlockTCPServer.GameLogic.ActorComponents
             string origin,
             string @class,
             string name,
-            short health,
-            short defense,
-            short attack,
-            short speed,
-            short precision,
-            short manaCost,
+            Attribute health,
+            Attribute defense,
+            Attribute attack,
+            Attribute speed,
+            Attribute precision,
+            Attribute manaCost,
             string rarity,
             Action actorAction
         )
