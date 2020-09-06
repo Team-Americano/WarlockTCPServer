@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,20 @@ namespace WarlockTCPServer.Managers
             };
         }
 
+        public static void RunGameLoop()
+        {
+            while(NetworkManager.Packets.Count > 0)
+            {
+                lock (NetworkManager.Packets)
+                {
+                    foreach (var packet in NetworkManager.Packets)
+                    {
+                        HandleCommand(packet);
+                    }
+                }
+            }
+        }
+
         public static void HandleCommand(Packet packet)
         {
             var commandId = (CommandId)packet.CommandId;
@@ -41,7 +56,7 @@ namespace WarlockTCPServer.Managers
 
         public static Task Test(Packet packet)
         {
-            TestPOCO poco = (TestPOCO)packet.POCO;
+            TestPOCO poco = JsonConvert.DeserializeObject<TestPOCO>(packet.POCOJson);
             var commandId = (CommandId)packet.CommandId;
             Console.WriteLine(poco.Line);
             var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
