@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WarlockTCPServer.GameLogic
+namespace WarlockTCPServer.GameLogic.ActorComponents
 {
     public class Actor
     {
@@ -8,18 +8,18 @@ namespace WarlockTCPServer.GameLogic
         public string Origin { get; set; }
         public string Class { get; set; }
         public string Name { get; set; }
-        public short Health { get; set; }
-        public short Defense { get; set; }
-        public short Attack { get; set; }
-        public short Speed { get; set; }
-        public short Precision { get; set; }
-        public short ManaCost { get; set; }
+        public Attribute Health { get; set; }
+        public Attribute Defense { get; set; }
+        public Attribute Attack { get; set; }
+        public Attribute Speed { get; set; }
+        public Attribute Precision { get; set; }
+        public Attribute ManaCost { get; set; }
         public string Rarity { get; set; }
         public Action ActorAction { get; set; }
 
         public Actor()
         {
-            // explicitly empty constructor
+            // explicit empty constructor
         }
 
         public Actor

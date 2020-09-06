@@ -6,11 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="GameLogic\ActorComponents\Actions\**" />
+    <Compile Remove="GameLogic\ActorComponents\Effects\**" />
     <Compile Remove="Primitives\**" />
+    <EmbeddedResource Remove="GameLogic\ActorComponents\Actions\**" />
+    <EmbeddedResource Remove="GameLogic\ActorComponents\Effects\**" />
     <EmbeddedResource Remove="Primitives\**" />
+    <None Remove="GameLogic\ActorComponents\Actions\**" />
+    <None Remove="GameLogic\ActorComponents\Effects\**" />
     <None Remove="Primitives\**" />
-    <Folder Include="GameLogic\Actor\Actions\" />
-    <Folder Include="GameLogic\Actor\Effects\" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 

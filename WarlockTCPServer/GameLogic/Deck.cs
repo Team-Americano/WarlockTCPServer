@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarlockTCPServer.Builders;
+using WarlockTCPServer.GameLogic.ActorComponents;
 using static WarlockTCPServer.Constants.DeckConstants;
 
 
@@ -36,16 +37,6 @@ namespace WarlockTCPServer.GameLogic
             DrawPile = new Queue<Actor>(CardSet);
         }
 
-        public Actor[] Draw(int cardAmount)
-        {
-            var drawnCards = new Actor[cardAmount];
-            for (int i = 0; i < cardAmount; i++)
-            {
-                drawnCards[i] = DrawPile.Dequeue();
-            }
-            return drawnCards;
-        }
-
         public void Shuffle()
         {
             // Fisher-Yates algorithm
@@ -69,6 +60,18 @@ namespace WarlockTCPServer.GameLogic
                 DrawPile.Enqueue(DiscardPile.Dequeue());
             }
             Shuffle();
+        }
+
+        public Actor[] Draw(int cardAmount)
+        {
+            var drawnCards = new Actor[cardAmount];
+            for (int i = 0; i < cardAmount; i++)
+            {
+                if (DrawPile.Count <= 0)
+                    Reshuffle();
+                drawnCards[i] = DrawPile.Dequeue();
+            }
+            return drawnCards;
         }
     }
 }

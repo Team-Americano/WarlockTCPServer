@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using WarlockTCPServer.GameLogic;
+using WarlockTCPServer.GameLogic.ActorComponents;
 using static WarlockTCPServer.Constants.DeckConstants;
 
 namespace WarlockTCPServer.Builders
