@@ -11,6 +11,7 @@ namespace WarlockTCPServer.Managers
 {
     public static class DrawManager
     {
+        // Stretch Goal: Build in Mulligan logic
         public static List<Actor> DrawCards(Player player, GameState game)
         {
             var start = player.Hand.Count;

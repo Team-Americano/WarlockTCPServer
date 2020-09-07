@@ -15,6 +15,7 @@ namespace WarlockTCPServer.Managers
     // Draw Phase 200
     // Draft Phase 300
     // Reposition Phase 400
+    // Combat Commands 500
     public enum CommandId
     {
         test = 42,
@@ -30,7 +31,7 @@ namespace WarlockTCPServer.Managers
     {
         private delegate Task Command(Packet packet);
         private static Dictionary<CommandId, Command> _commands;
-        public static List<GameState> Games;
+        public static List<GameState> Games = new List<GameState>(); // Stopped Testing here
         // will include a static dic of game states
 
         public static void Setup()
@@ -56,24 +57,40 @@ namespace WarlockTCPServer.Managers
             Games.Add(new GameState());
 
             Games[0].Player1.ClientId = NetworkManager.Clients[0].PlayerId;
-            Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
+            // Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId; Commented out for testing
 
             Games[0].Player1.Mana = 0;
-            Games[0].Player2.Mana = 0;
+            Games[0].Player2.Mana = 0; 
 
             Games[0].Player1.Score = 0;
             Games[0].Player2.Score = 0;
 
-            Games[0].Player1.Hand = null;
-            Games[0].Player2.Hand = null;
+            Games[0].Player1.Hand = new List<Actor>();
+            Games[0].Player2.Hand = new List<Actor>();
 
-            Games[0].Player1.Party = null;
-            Games[0].Player2.Party = null;
+            Games[0].Player1.Party = new List<Actor>();
+            Games[0].Player2.Party = new List<Actor>();
             // =======================================================================
         }
 
         public static void RunGameLoop()
         {
+            // ============== Planned Turn Order =============
+            // 1. Choose who goes first - state machine
+            // 2. 1st player that round Draws
+            // 3. 1st player that round drafts
+            // 4. 1st player that round repos party
+            // 5. Update both clients with that info
+            // 6. 2nd player that round Draws
+            // 7. 2nd player that round drafts
+            // 8. 2nd player that round repos party
+            // 9. Update both clients with that info
+            // 10. Combat logic (game)
+            // 11. Send those commands to the client
+            // 12. End round logic
+            // 13. Updated client based off of end round logic
+            // ================================================
+
             while (NetworkManager.Packets.Count > 0)
             {
                 lock (NetworkManager.Packets)
@@ -121,40 +138,37 @@ namespace WarlockTCPServer.Managers
 
         public static Task Draw(string playerId)
         {
-            try
+            List<Actor> hand = new List<Actor>();
+
+            if (playerId == Games[0].Player1.ClientId)
             {
-                List<Actor> hand = new List<Actor>();
-
-                if (playerId == Games[0].Player1.ClientId)
-                {
-                    hand = DrawManager.DrawCards(Games[0].Player1, Games[0]);
-                }
-                else if (playerId == Games[0].Player2.ClientId)
-                {
-                    hand = DrawManager.DrawCards(Games[0].Player2, Games[0]);
-                }
-
-                DrawPOCO drawPoco = new DrawPOCO { Hand = hand };
-
-                Packet packet = new Packet
-                {
-                    CommandId = (short)CommandId.draw,
-                    PlayerId = playerId,
-                    POCOJson = JsonConvert.SerializeObject(drawPoco)
-                };
-
-                var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
-
-                if (playerId != null)
-                {
-                    NetworkManager.SendPacket(client.TcpClient, packet);
-                }
+                hand = DrawManager.DrawCards(Games[0].Player1, Games[0]);
             }
-            catch (Exception)
+            else if (playerId == Games[0].Player2.ClientId)
             {
-
-                throw new Exception("No Player Selected");
+                hand = DrawManager.DrawCards(Games[0].Player2, Games[0]);
             }
+            else
+            {
+                throw new Exception("There was no player selected.");
+            }
+
+            DrawPOCO drawPoco = new DrawPOCO { Hand = hand };
+
+            Packet packet = new Packet
+            {
+                CommandId = (short)CommandId.draw,
+                PlayerId = playerId,
+                POCOJson = JsonConvert.SerializeObject(drawPoco)
+            };
+
+            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+
+            if (playerId != null)
+            {
+                NetworkManager.SendPacket(client.TcpClient, packet);
+            }
+
 
             return Task.FromResult(0);
         }
