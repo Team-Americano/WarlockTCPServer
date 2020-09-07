@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WarlockTCPServer.GameLogic;
+﻿using WarlockTCPServer.GameLogic.ActorComponents;
 using static WarlockTCPServer.Constants.DeckConstants;
 
 namespace WarlockTCPServer.Builders
@@ -15,16 +12,29 @@ namespace WarlockTCPServer.Builders
             var classStats = ClassStats[associations.Item2];
             var rarityStats = RarityStats[associations.Item3];
 
+            Attribute health = new Attribute();
+            Attribute defense = new Attribute();
+            Attribute attack = new Attribute();
+            Attribute speed = new Attribute();
+            Attribute precision = new Attribute();
+            Attribute manaCost = new Attribute();
+
             string name = associations.Item4;
             string origin = originStats.origin;
             string @class = classStats.@class;
             string rarity = rarityStats.rarity;
-            short health = (short)(originStats.health + classStats.health + rarityStats.health);
-            short defense = (short)(originStats.defense + classStats.defense + rarityStats.defense);
-            short attack = (short)(originStats.attack + classStats.attack + rarityStats.attack);
-            short speed = (short)(originStats.speed + classStats.speed + rarityStats.speed);
-            short precision = (short)(originStats.precision + classStats.precision + rarityStats.precision);
-            short manaCost = rarityStats.manaCost;
+            health.BaseValue = (short)(originStats.health + classStats.health + rarityStats.health);
+            health.CurrentValue = (short)(originStats.health + classStats.health + rarityStats.health);
+            defense.BaseValue = (short)(originStats.defense + classStats.defense + rarityStats.defense);
+            defense.CurrentValue = (short)(originStats.defense + classStats.defense + rarityStats.defense);
+            attack.BaseValue = (short)(originStats.attack + classStats.attack + rarityStats.attack);
+            attack.CurrentValue = (short)(originStats.attack + classStats.attack + rarityStats.attack);
+            speed.BaseValue = (short)(originStats.speed + classStats.speed + rarityStats.speed);
+            speed.CurrentValue = (short)(originStats.speed + classStats.speed + rarityStats.speed);
+            precision.BaseValue = (short)(originStats.precision + classStats.precision + rarityStats.precision);
+            precision.CurrentValue = (short)(originStats.precision + classStats.precision + rarityStats.precision);
+            manaCost.BaseValue = rarityStats.manaCost;
+            manaCost.CurrentValue = rarityStats.manaCost;
 
             // TODO: Add actions/abilites to actor instantiation
             Actor actor = new Actor(cardId, origin, @class, name, health, defense, attack, speed, precision, manaCost, rarity, null);

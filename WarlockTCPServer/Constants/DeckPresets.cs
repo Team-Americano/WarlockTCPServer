@@ -5,7 +5,7 @@ namespace WarlockTCPServer.Constants
 {
     public static class DeckPresets
     {
-        #region Base Deck
+        #region Base Deck (also used for unit testing purposes)
         public static List<(Characters character, int amount)> BaseDeck = new List<(Characters character, int amount)>
         {   // Undead
             (Characters.Skeleton, 3),
