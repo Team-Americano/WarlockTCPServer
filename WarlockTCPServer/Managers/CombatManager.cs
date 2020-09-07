@@ -4,8 +4,20 @@ using System.Text;
 
 namespace WarlockTCPServer.Managers
 {
-    class CombatManager
+    public static class CombatManager
     {
-        // fill a queue with animation steps
+        // will return a queue of render command objects
+        public static Queue<object> AttackPhase()
+        {
+
+
+
+
+
+
+
+
+            return new Queue<object>();
+        }
     }
 }
