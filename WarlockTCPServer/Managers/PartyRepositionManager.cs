@@ -6,8 +6,11 @@ using WarlockTCPServer.GameLogic;
 
 namespace WarlockTCPServer.Managers
 {
-    class DraftManager
+    class PartyRepositionManager
     {
-
+        public void PartyReposition(Player player) // or user
+        {
+                        
+        }
     }
 }

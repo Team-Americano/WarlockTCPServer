@@ -4,8 +4,7 @@ using System.Text;
 
 namespace WarlockTCPServer.POCOs
 {
-    public abstract class POCO
+    public class DrawPOCO : POCO
     {
-        public string PlayerId { get; set; }
     }
 }

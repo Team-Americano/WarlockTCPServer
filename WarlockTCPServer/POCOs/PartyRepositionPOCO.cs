@@ -4,8 +4,7 @@ using System.Text;
 
 namespace WarlockTCPServer.POCOs
 {
-    public abstract class POCO
+    public class PartyRepositionPOCO : POCO
     {
-        public string PlayerId { get; set; }
     }
 }
