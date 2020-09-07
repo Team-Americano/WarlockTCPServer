@@ -8,6 +8,7 @@ namespace WarlockTCPServer.GameLogic
         public Player Player1 { get; set; }
         public Player Player2 { get; set; }
         public Deck Deck { get; set; }
+        public bool Running { get; set; }
 
         /// <summary>
         /// Constructor without parameters builds the deck with the standard layout.
@@ -17,6 +18,9 @@ namespace WarlockTCPServer.GameLogic
             Deck = new Deck();
             DeckManager.Fill(Deck, "BaseDeck");
             DeckManager.Shuffle(Deck);
+            Running = true;
+            Player1 = new Player();
+            Player2 = new Player();
         }
 
         public GameState(string deckName)
@@ -24,6 +28,9 @@ namespace WarlockTCPServer.GameLogic
             Deck = new Deck();
             DeckManager.Fill(Deck, deckName);
             DeckManager.Shuffle(Deck);
+            Running = true;
+            Player1 = new Player();
+            Player2 = new Player();
         }
     }
 }
