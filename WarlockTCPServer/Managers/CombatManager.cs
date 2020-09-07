@@ -6,5 +6,6 @@ namespace WarlockTCPServer.Managers
 {
     class CombatManager
     {
+        // fill a queue with animation steps
     }
 }
