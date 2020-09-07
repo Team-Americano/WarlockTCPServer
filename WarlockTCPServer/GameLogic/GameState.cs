@@ -9,8 +9,6 @@ namespace WarlockTCPServer.GameLogic
         public Player Player2 { get; set; }
         public Deck Deck { get; set; }
 
-       
-
         /// <summary>
         /// Constructor without parameters builds the deck with the standard layout.
         /// </summary>
