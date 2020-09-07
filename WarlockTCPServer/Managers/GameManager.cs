@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WarlockTCPServer.GameLogic;
+using WarlockTCPServer.GameLogic.ActorComponents;
 using WarlockTCPServer.NetworkClasses;
 using WarlockTCPServer.POCOs;
 
@@ -29,7 +30,7 @@ namespace WarlockTCPServer.Managers
     {
         private delegate Task Command(Packet packet);
         private static Dictionary<CommandId, Command> _commands;
-        public static List<GameState> games;
+        public static List<GameState> Games;
         // will include a static dic of game states
 
         public static void Setup()
@@ -38,17 +39,24 @@ namespace WarlockTCPServer.Managers
             {
                 { CommandId.test, Test },
                 { CommandId.hello, Hello },
-                { CommandId.draw, Draw },
+                //{ CommandId.draw, Draw },
                 { CommandId.draft, Draft },
                 { CommandId.acknowlegdeDraft, AcknowlegdeDraft },
                 { CommandId.partyReposition, PartyReposition },
                 { CommandId.acknowlegdeReposition, AcknowledgeReposition }
             };
 
+            SetupNewGame();
+        }
+
+        public static void SetupNewGame()
+        {
             // =============== This is hard coded NEEDS TO BE CHANGED ================
-            games.Add(new GameState());
-            games[0].Player1.ClientId = NetworkManager.Clients[0].PlayerId;
-            games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
+            // probably could add a property of running in game state and have it changed once it's initialized. 
+            Games.Add(new GameState());
+            Games[0].Initialize();
+            Games[0].Player1.ClientId = NetworkManager.Clients[0].PlayerId;
+            Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
             // =======================================================================
         }
 
@@ -99,12 +107,42 @@ namespace WarlockTCPServer.Managers
         }
 
 
-        public static Task Draw(Packet packet)
+        public static Task Draw(string playerId)
         {
-            // ================ For Drawing cards ================
-            // 1. Get current player
-            // 2. Send the draw command through the draw manager
-            // 3. get the new hand and send it the network manager as a packet.
+            try
+            {
+                List<Actor> hand = null;
+
+                if (playerId == Games[0].Player1.ClientId)
+                {
+                    hand = DrawManager.DrawCards(Games[0].Player1, Games[0]);
+                }
+                else if (playerId == Games[0].Player2.ClientId)
+                {
+                    hand = DrawManager.DrawCards(Games[0].Player2, Games[0]);
+                }
+
+                DrawPOCO drawPoco = new DrawPOCO { Hand = hand };
+
+                Packet packet = new Packet
+                {
+                    CommandId = (short)CommandId.draft,
+                    PlayerId = playerId,
+                    POCOJson = JsonConvert.SerializeObject(drawPoco)
+                };
+
+                var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+
+                if (playerId != null)
+                {
+                    NetworkManager.SendPacket(client.TcpClient, packet);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("No Player Selected");
+            }
 
             return Task.FromResult(0);
         }
