@@ -20,10 +20,11 @@ namespace WarlockTCPServer.Managers
             }
 
             player.Mana += manaCounter;
-
             player.Hand = hand;
-
             player.Party = party;
+
+            // Build logic for discarding actors from their party
+            // put those actors in to the game.deck.discardpile
 
             Tuple<List<Actor>, List<Actor>, short> partyHandMana = new Tuple<List<Actor>, List<Actor>, short>
                 (item1: player.Party, item2: player.Hand, item3: player.Mana);            
