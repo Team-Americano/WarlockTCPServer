@@ -1,6 +1,4 @@
-﻿using System;
-using Xunit;
-using WarlockTCPServer.GameLogic;
+﻿using Xunit;
 using static WarlockTCPServer.Builders.ActorBuilder;
 using static WarlockTCPServer.Constants.DeckConstants;
 using WarlockTCPServer.GameLogic.ActorComponents;
