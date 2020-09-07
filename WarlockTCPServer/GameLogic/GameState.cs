@@ -7,6 +7,8 @@
         public Player Player2 { get; set; }
         public Deck Deck { get; set; }
 
+        // TODO: Add constructor
+
         public void Initialize()
         {
             Deck.Fill("BaseDeck");

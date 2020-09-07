@@ -9,9 +9,9 @@ namespace WarlockTCPServer.GameLogic
 {
     public class Deck
     {
-        private Actor[] CardSet { get; set; }
-        private Queue<Actor> DrawPile { get; set; }
-        private Queue<Actor> DiscardPile { get; set; }
+        public Actor[] CardSet { get; set; }
+        public Queue<Actor> DrawPile { get; set; }
+        public Queue<Actor> DiscardPile { get; set; }
 
         #region Fill() overloads
         public void Fill(string deckName)
