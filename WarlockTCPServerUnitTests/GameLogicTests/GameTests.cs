@@ -3,7 +3,7 @@ using Xunit;
 
 namespace WarlockTCPServerUnitTests.GameLogicTests
 {
-    public class GameStateTests
+    public class GameTests
     {
         [Fact]
         public void Test1()
