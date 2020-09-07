@@ -1,4 +1,6 @@
-﻿namespace WarlockTCPServer.GameLogic
+﻿using WarlockTCPServer.Managers.GameStateData;
+
+namespace WarlockTCPServer.GameLogic
 {
     public class GameState
     {
@@ -7,13 +9,23 @@
         public Player Player2 { get; set; }
         public Deck Deck { get; set; }
 
-        // TODO: Add constructor
+       
 
-        public void Initialize()
+        /// <summary>
+        /// Constructor without parameters builds the deck with the standard layout.
+        /// </summary>
+        public GameState()
         {
-            Deck.Fill("BaseDeck");
-            Deck.Shuffle();
-            Deck.Queue();
+            Deck = new Deck();
+            DeckManager.Fill(Deck, "BaseDeck");
+            DeckManager.Shuffle(Deck);
+        }
+
+        public GameState(string deckName)
+        {
+            Deck = new Deck();
+            DeckManager.Fill(Deck, deckName);
+            DeckManager.Shuffle(Deck);
         }
     }
 }

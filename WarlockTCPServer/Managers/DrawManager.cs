@@ -5,6 +5,7 @@ using System.Text;
 using WarlockTCPServer.Constants;
 using WarlockTCPServer.GameLogic;
 using WarlockTCPServer.GameLogic.ActorComponents;
+using WarlockTCPServer.Managers.GameStateData;
 
 namespace WarlockTCPServer.Managers
 {
@@ -18,7 +19,8 @@ namespace WarlockTCPServer.Managers
 
             if (cardsToDraw > 0)
             {
-                var drawnCards = game.Deck.Draw(cardsToDraw);  // CHANGE THIS AFTER PEYTON's UPDATES
+                var deck = game.Deck;
+                var drawnCards = DeckManager.Draw(deck, cardsToDraw);
                 foreach (var actor in drawnCards)
                 {
                     player.Hand.Add(actor);
