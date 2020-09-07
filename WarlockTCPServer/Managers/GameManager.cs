@@ -89,7 +89,7 @@ namespace WarlockTCPServer.Managers
             TestPOCO poco = JsonConvert.DeserializeObject<TestPOCO>(packet.POCOJson);
             var commandId = (CommandId)packet.CommandId;
             Console.WriteLine(poco.Line);
-            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+            var client = (Client)NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
             if (client != null)
             {
@@ -131,7 +131,7 @@ namespace WarlockTCPServer.Managers
                     POCOJson = JsonConvert.SerializeObject(drawPoco)
                 };
 
-                var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+                var client = (Client)NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
                 if (playerId != null)
                 {
@@ -176,7 +176,7 @@ namespace WarlockTCPServer.Managers
                 POCOJson = JsonConvert.SerializeObject(draftPoco)
             };
 
-            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+            var client = (Client)NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
             if (client != null)
             {

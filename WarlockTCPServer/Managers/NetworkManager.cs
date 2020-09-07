@@ -1,18 +1,12 @@
 ﻿using Microsoft.Playfab.Gaming.GSDK.CSharp;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading;
-using System.Threading.Tasks;
 using WarlockTCPServer.NetworkClasses;
-using WarlockTCPServer.POCOs;
 
 namespace WarlockTCPServer.Managers
 {
@@ -37,7 +31,17 @@ namespace WarlockTCPServer.Managers
 
             _listener = new TcpListener(_ipAddress, _port);
 
-            GameserverSDK.Start();
+            try
+            {
+                GameserverSDK.Start();
+            }
+            catch (GSDKInitializationException initEx)
+            {
+                GameserverSDK.LogMessage("Cannot start GSDK. Please make sure the MockAgent is running. ");
+                GameserverSDK.LogMessage($"Got Exception: {initEx.ToString()}");
+                return;
+            }
+
             GameserverSDK.RegisterShutdownCallback(OnShutdown);
             GameserverSDK.RegisterHealthCallback(IsHealthy);
             GameserverSDK.RegisterMaintenanceCallback(OnMaintenanceScheduled);
@@ -61,7 +65,7 @@ namespace WarlockTCPServer.Managers
                     client.ReceiveBufferSize = _bufferSize;
 
                     string playerTag = Clients.Count.ToString();
-                    var newClient = new Client(playerTag);
+                    var newClient = new Client(playerTag, client);
 
                     Clients.Add(newClient);
                     GameserverSDK.UpdateConnectedPlayers(Clients);

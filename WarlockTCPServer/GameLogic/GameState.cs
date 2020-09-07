@@ -11,9 +11,9 @@
 
         public void Initialize()
         {
-            Deck.Fill("BaseDeck");
-            Deck.Shuffle();
-            Deck.Queue();
+            //Deck.Fill("BaseDeck");
+            //Deck.Shuffle();
+            //Deck.Queue();
         }
     }
 }

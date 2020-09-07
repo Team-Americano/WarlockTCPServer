@@ -18,12 +18,12 @@ namespace WarlockTCPServer.Managers
 
             if (cardsToDraw > 0)
             {
-                var drawnCards = game.Deck.Draw(cardsToDraw);  // CHANGE THIS AFTER PEYTON's UPDATES
-                foreach (var actor in drawnCards)
-                {
-                    player.Hand.Add(actor);
-                }   
-                return player.Hand;
+                //var drawnCards = game.Deck.Draw(cardsToDraw);  // CHANGE THIS AFTER PEYTON's UPDATES
+                //foreach (var actor in drawnCards)
+                //{
+                //    player.Hand.Add(actor);
+                //}   
+                //return player.Hand;
             }
 
             return player.Hand;
