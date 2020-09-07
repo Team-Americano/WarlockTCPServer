@@ -169,7 +169,6 @@ namespace WarlockTCPServer.Managers
                 NetworkManager.SendPacket(client.TcpClient, packet);
             }
 
-
             return Task.FromResult(0);
         }
 
