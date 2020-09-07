@@ -54,9 +54,21 @@ namespace WarlockTCPServer.Managers
             // =============== This is hard coded NEEDS TO BE CHANGED ================
             // probably could add a property of running in game state and have it changed once it's initialized. 
             Games.Add(new GameState());
-            Games[0].Initialize();
+
             Games[0].Player1.ClientId = NetworkManager.Clients[0].PlayerId;
             Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
+
+            Games[0].Player1.Mana = 0;
+            Games[0].Player2.Mana = 0;
+
+            Games[0].Player1.Score = 0;
+            Games[0].Player2.Score = 0;
+
+            Games[0].Player1.Hand = null;
+            Games[0].Player2.Hand = null;
+
+            Games[0].Player1.Party = null;
+            Games[0].Player2.Party = null;
             // =======================================================================
         }
 
@@ -111,7 +123,7 @@ namespace WarlockTCPServer.Managers
         {
             try
             {
-                List<Actor> hand = null;
+                List<Actor> hand = new List<Actor>();
 
                 if (playerId == Games[0].Player1.ClientId)
                 {
@@ -126,7 +138,7 @@ namespace WarlockTCPServer.Managers
 
                 Packet packet = new Packet
                 {
-                    CommandId = (short)CommandId.draft,
+                    CommandId = (short)CommandId.draw,
                     PlayerId = playerId,
                     POCOJson = JsonConvert.SerializeObject(drawPoco)
                 };
@@ -149,25 +161,25 @@ namespace WarlockTCPServer.Managers
 
         public static Task Draft(Packet packet)
         {
-            // ================== Draft Command ===================
-            // 1. Get the current player
-            // 2. Send the current player to the draft manager
-            // 3. Get the monster array/list and send it to the Network Manager
-
             DraftPOCO poco = JsonConvert.DeserializeObject<DraftPOCO>(packet.POCOJson);
 
-            List<Actor> party = null;
+            Tuple<List<Actor>, List<Actor>, short> partyHandMana = null;
 
             if (packet.PlayerId == Games[0].Player1.ClientId)
             {
-                party = DraftManager.DraftParty(Games[0].Player1, poco.Party);
+                partyHandMana = DraftManager.DraftParty(Games[0].Player1, Games[0], poco.Party, poco.Hand, poco.Mana);
             }
             else if (packet.PlayerId == Games[0].Player2.ClientId)
             {
-                party = DraftManager.DraftParty(Games[0].Player2, poco.Party);
+                partyHandMana = DraftManager.DraftParty(Games[0].Player2, Games[0], poco.Party, poco.Hand, poco.Mana);
             }
 
-            DraftPOCO draftPoco = new DraftPOCO { Party = party };
+            DraftPOCO draftPoco = new DraftPOCO
+            {
+                Party = partyHandMana.Item1,
+                Hand = partyHandMana.Item2,
+                Mana = partyHandMana.Item3
+            };
 
             Packet outputPacket = new Packet
             {
@@ -185,7 +197,7 @@ namespace WarlockTCPServer.Managers
 
             return Task.FromResult(0);
         }
-        
+
         public static Task AcknowlegdeDraft(Packet packet)
         {
             // ANTI-CHEATING
@@ -201,6 +213,37 @@ namespace WarlockTCPServer.Managers
             // 1. get the current player
             // 2. Send current player to the Party Reposition Manger
             // 3. Get the new party array/list and send it to the Network Manager
+
+            PartyRepositionPOCO poco = JsonConvert.DeserializeObject<PartyRepositionPOCO>(packet.POCOJson);
+            List<Actor> party = new List<Actor>();
+
+            if (packet.PlayerId == Games[0].Player1.ClientId)
+            {
+                party = PartyRepositionManager.PartyReposition(Games[0].Player1, poco.Party);
+            }
+            else if (packet.PlayerId == Games[0].Player2.ClientId)
+            {
+                party = PartyRepositionManager.PartyReposition(Games[0].Player2, poco.Party);
+            }
+
+            PartyRepositionPOCO outputPoco = new PartyRepositionPOCO()
+            {
+                Party = party
+            };
+
+            Packet outputPacket = new Packet
+            {
+                CommandId = (short)CommandId.partyReposition,
+                PlayerId = packet.PlayerId,
+                POCOJson = JsonConvert.SerializeObject(outputPoco)
+            };
+
+            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+
+            if (client != null)
+            {
+                NetworkManager.SendPacket(client.TcpClient, outputPacket);
+            }
 
             return Task.FromResult(0);
         }
