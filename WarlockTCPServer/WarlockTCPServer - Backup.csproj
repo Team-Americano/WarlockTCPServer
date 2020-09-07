@@ -1,17 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
+<<<<<<< Updated upstream
+=======
   <ItemGroup>
     <Compile Remove="Primitives\**" />
     <EmbeddedResource Remove="Primitives\**" />
     <None Remove="Primitives\**" />
     <Folder Include="GameLogic\Actor\Actions\" />
     <Folder Include="GameLogic\Actor\Effects\" />
+    <PackageReference Include="com.playfab.csharpgsdk" Version="0.10.200325" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="PlayFabAllSDK" Version="1.80.200901" />
   </ItemGroup>
 
+>>>>>>> Stashed changes
 </Project>
