@@ -51,7 +51,8 @@ namespace WarlockTCPServer.Managers
                 p2Actor = GetNextActor(game.Player2.Party);
 
             }
-            // RESET Stats function
+            // TODO: Determine Points for the Round
+            ResetStats(game);
             return RQE;
         }
 
@@ -65,6 +66,31 @@ namespace WarlockTCPServer.Managers
                     highest = actor;
             }
             return highest.Speed.CurrentValue == -10000 ? null : highest;
+        }
+
+        private static void ResetStats(GameState game)
+        {
+            foreach (var card in game.Player1.Party)
+            {
+                card.Attack.CurrentValue = card.Attack.BaseValue;
+                card.Defense.CurrentValue = card.Defense.BaseValue;
+                card.Health.CurrentValue = card.Health.BaseValue;
+                card.Speed.CurrentValue = card.Speed.BaseValue;
+                card.Precision.CurrentValue = card.Precision.BaseValue;
+                card.ManaCost.CurrentValue = card.ManaCost.BaseValue;
+                card.HasGone = false;
+            }
+
+            foreach (var card in game.Player2.Party)
+            {
+                card.Attack.CurrentValue = card.Attack.BaseValue;
+                card.Defense.CurrentValue = card.Defense.BaseValue;
+                card.Health.CurrentValue = card.Health.BaseValue;
+                card.Speed.CurrentValue = card.Speed.BaseValue;
+                card.Precision.CurrentValue = card.Precision.BaseValue;
+                card.ManaCost.CurrentValue = card.ManaCost.BaseValue;
+                card.HasGone = false;
+            }
         }
     }
 }
