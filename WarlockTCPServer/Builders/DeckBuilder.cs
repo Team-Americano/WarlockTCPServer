@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarlockTCPServer.GameLogic;
 using WarlockTCPServer.GameLogic.ActorComponents;
 using static WarlockTCPServer.Constants.DeckConstants;
 using static WarlockTCPServer.Constants.DeckPresets;
@@ -13,7 +12,6 @@ namespace WarlockTCPServer.Builders
         private Actor[] FinalDeck;
         private List<Actor> RawDeck = new List<Actor>();
 
-        #region Builder Functions
         public Actor[] Build(string deckName)
         {
             var deckScaffold = Presets[deckName];
@@ -36,7 +34,6 @@ namespace WarlockTCPServer.Builders
             FinalDeck = RawDeck.ToArray();
             return FinalDeck;
         }
-        #endregion
 
         #region Defunct
         //private int DeckSize;
