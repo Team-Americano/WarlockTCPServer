@@ -154,11 +154,41 @@ namespace WarlockTCPServer.Managers
             // 2. Send the current player to the draft manager
             // 3. Get the monster array/list and send it to the Network Manager
 
+            DraftPOCO poco = JsonConvert.DeserializeObject<DraftPOCO>(packet.POCOJson);
+
+            List<Actor> party = null;
+
+            if (packet.PlayerId == Games[0].Player1.ClientId)
+            {
+                party = DraftManager.DraftParty(Games[0].Player1, poco.Party);
+            }
+            else if (packet.PlayerId == Games[0].Player2.ClientId)
+            {
+                party = DraftManager.DraftParty(Games[0].Player2, poco.Party);
+            }
+
+            DraftPOCO draftPoco = new DraftPOCO { Party = party };
+
+            Packet outputPacket = new Packet
+            {
+                CommandId = (short)CommandId.draft,
+                PlayerId = packet.PlayerId,
+                POCOJson = JsonConvert.SerializeObject(draftPoco)
+            };
+
+            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+
+            if (client != null)
+            {
+                NetworkManager.SendPacket(client.TcpClient, outputPacket);
+            }
+
             return Task.FromResult(0);
         }
-
+        
         public static Task AcknowlegdeDraft(Packet packet)
         {
+            // ANTI-CHEATING
             // =================== Acknowledge Draft ============
             // 1. Send a green flag for the player to continue
 
@@ -177,6 +207,7 @@ namespace WarlockTCPServer.Managers
 
         public static Task AcknowledgeReposition(Packet packet)
         {
+            // ANTI-CHEATING
             // =========================  Acknowledge Repo ==================
             // 1. Send a green flag to the players
             // 2. send the new updated state to the clients.
