@@ -45,5 +45,77 @@ namespace WarlockTCPServerUnitTests.GameLogicTests
             Assert.NotNull(deck.CardSet);
             Assert.Equal(10, deck.CardSet.Length);
         }
+
+        [Fact]
+        public void DeckQueueWorks()
+        {
+            Deck deck = new Deck();
+            deck.Fill("BaseDeck");
+
+            deck.Queue();
+
+            Assert.NotNull(deck.DrawPile);
+            Assert.Equal(108, deck.DrawPile.Count);
+        }
+
+        [Fact]
+        public void DeckShuffleWorks()
+        {
+            Deck deck = new Deck();
+            deck.Fill("BaseDeck");
+            deck.Queue();
+            var preShuffle = deck.DrawPile;
+
+            deck.Shuffle();
+            var postShuffle = deck.DrawPile;
+
+            Assert.NotNull(deck.DrawPile);
+            Assert.Equal(108, preShuffle.Count);
+            Assert.Equal(108, postShuffle.Count);
+            Assert.NotEqual(preShuffle, postShuffle);
+        }
+
+        [Fact]
+        public void DeckDrawWorks()
+        {
+            Deck deck = new Deck();
+            deck.Fill("BaseDeck");
+            deck.Queue();
+
+            var drawnCards = deck.Draw(7);
+
+            Assert.NotNull(drawnCards);
+            Assert.Equal(7, drawnCards.Length);
+            Assert.Equal(101, deck.DrawPile.Count);
+        }
+
+        [Fact]
+        public void DeckDiscardWorks()
+        {
+            Deck deck = new Deck();
+            deck.Fill("BaseDeck");
+            deck.Queue();
+            var drawnCards = deck.Draw(7);
+
+            deck.Discard(drawnCards);
+
+            Assert.NotNull(deck.DiscardPile);
+            Assert.Equal(7, deck.DiscardPile.Count);
+        }
+
+        [Fact]
+        public void DeckReshuffleWorks()
+        {
+            Deck deck = new Deck();
+            deck.Fill("BaseDeck");
+            deck.Queue();
+            var drawnCards = deck.Draw(7);
+            deck.Discard(drawnCards);
+
+            deck.Reshuffle();
+
+            Assert.Equal(108, deck.DrawPile.Count);
+            Assert.Equal(0, deck.DiscardPile.Count);
+        }
     }
 }

@@ -73,5 +73,14 @@ namespace WarlockTCPServer.GameLogic
             }
             return drawnCards;
         }
+
+        public void Discard(IEnumerable<Actor> discardCards)
+        {
+            if (DiscardPile == null) DiscardPile = new Queue<Actor>();
+            foreach (var card in discardCards)
+            {
+                DiscardPile.Enqueue(card);
+            }
+        }
     }
 }
