@@ -1,33 +1,33 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 using WarlockTCPServer.GameLogic;
 using WarlockTCPServer.GameLogic.ActorComponents;
 using static WarlockTCPServer.Constants.DeckPresets;
 using static WarlockTCPServer.Constants.DeckConstants;
 using static WarlockTCPServer.Builders.ActorBuilder;
+using static WarlockTCPServer.Managers.GameStateData.DeckManager;
 
 namespace WarlockTCPServerUnitTests.GameLogicTests
 {
-    public class DeckTests
+    public class DeckManagerTests
     {
         [Fact]
         public void DeckFillWorksWithDeckName()
         {
             Deck deck = new Deck();
-            deck.Fill("BaseDeck");
+            Fill(deck, "BaseDeck");
 
-            Assert.NotNull(deck.CardSet);
-            Assert.Equal(108, deck.CardSet.Length);
+            Assert.NotNull(deck.DrawPile);
+            Assert.Equal(108, deck.DrawPile.Count);
         }
 
         [Fact]
         public void DeckFillWorksWithDeckScaffold()
         {
             Deck deck = new Deck();
-            deck.Fill(BaseDeck);
+            Fill(deck, BaseDeck);
 
-            Assert.NotNull(deck.CardSet);
-            Assert.Equal(108, deck.CardSet.Length);
+            Assert.NotNull(deck.DrawPile);
+            Assert.Equal(108, deck.DrawPile.Count);
         }
 
         [Fact]
@@ -40,33 +40,20 @@ namespace WarlockTCPServerUnitTests.GameLogicTests
             }
 
             Deck deck = new Deck();
-            deck.Fill(customDeck);
-
-            Assert.NotNull(deck.CardSet);
-            Assert.Equal(10, deck.CardSet.Length);
-        }
-
-        [Fact]
-        public void DeckQueueWorks()
-        {
-            Deck deck = new Deck();
-            deck.Fill("BaseDeck");
-
-            deck.Queue();
+            Fill(deck, customDeck);
 
             Assert.NotNull(deck.DrawPile);
-            Assert.Equal(108, deck.DrawPile.Count);
+            Assert.Equal(10, deck.DrawPile.Count);
         }
 
         [Fact]
         public void DeckShuffleWorks()
         {
             Deck deck = new Deck();
-            deck.Fill("BaseDeck");
-            deck.Queue();
+            Fill(deck, "BaseDeck");
             var preShuffle = deck.DrawPile;
 
-            deck.Shuffle();
+            Shuffle(deck);
             var postShuffle = deck.DrawPile;
 
             Assert.NotNull(deck.DrawPile);
@@ -79,10 +66,9 @@ namespace WarlockTCPServerUnitTests.GameLogicTests
         public void DeckDrawWorks()
         {
             Deck deck = new Deck();
-            deck.Fill("BaseDeck");
-            deck.Queue();
+            Fill(deck, "BaseDeck");
 
-            var drawnCards = deck.Draw(7);
+            var drawnCards = Draw(deck, 7);
 
             Assert.NotNull(drawnCards);
             Assert.Equal(7, drawnCards.Length);
@@ -93,11 +79,10 @@ namespace WarlockTCPServerUnitTests.GameLogicTests
         public void DeckDiscardWorks()
         {
             Deck deck = new Deck();
-            deck.Fill("BaseDeck");
-            deck.Queue();
-            var drawnCards = deck.Draw(7);
+            Fill(deck, "BaseDeck");
+            var drawnCards = Draw(deck, 7);
 
-            deck.Discard(drawnCards);
+            Discard(deck, drawnCards);
 
             Assert.NotNull(deck.DiscardPile);
             Assert.Equal(7, deck.DiscardPile.Count);
@@ -107,12 +92,11 @@ namespace WarlockTCPServerUnitTests.GameLogicTests
         public void DeckReshuffleWorks()
         {
             Deck deck = new Deck();
-            deck.Fill("BaseDeck");
-            deck.Queue();
-            var drawnCards = deck.Draw(7);
-            deck.Discard(drawnCards);
+            Fill(deck, "BaseDeck");
+            var drawnCards = Draw(deck, 7);
+            Discard(deck, drawnCards);
 
-            deck.Reshuffle();
+            Reshuffle(deck);
 
             Assert.Equal(108, deck.DrawPile.Count);
             Assert.Equal(0, deck.DiscardPile.Count);

@@ -163,7 +163,7 @@ namespace WarlockTCPServer.Constants
         };
         #endregion
 
-        // TODO: Associate Actions/Abilites to Origins
+        // TODO: Associate Actions/Abilites to Characters
 
         #region Defunct
         //#region Player Deck Arrangements

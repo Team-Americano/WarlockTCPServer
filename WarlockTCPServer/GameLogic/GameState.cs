@@ -8,12 +8,5 @@
         public Deck Deck { get; set; }
 
         // TODO: Add constructor
-
-        public void Initialize()
-        {
-            Deck.Fill("BaseDeck");
-            Deck.Shuffle();
-            Deck.Queue();
-        }
     }
 }
