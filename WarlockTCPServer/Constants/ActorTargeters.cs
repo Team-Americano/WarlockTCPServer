@@ -23,7 +23,7 @@ namespace WarlockTCPServer.Constants
 
         public static Dictionary<string, Targeter> Targeters = new Dictionary<string, Targeter>()
         {
-            { "First Alive", FirstAlive }
+            { "FirstAlive", FirstAlive }
         };
 
 

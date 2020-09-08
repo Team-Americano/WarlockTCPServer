@@ -163,7 +163,31 @@ namespace WarlockTCPServer.Constants
         };
         #endregion
 
+        #region Effects, Targeters, and AppliedEffects
+        public enum Targeter
+        {
+            FirstAlive = 1
+        }
+
+        public enum AppliedEffect
+        {
+            StandardDamage = 1
+        }
+
+        // Specific and Unique combinations of Targeters and Applied Effects make up complete Effects
+        public enum Effect
+        {
+            BasicAttack = 1
+        }
+
+        public static Dictionary<Effect, (Targeter, AppliedEffect)> Effects = new Dictionary<Effect, (Targeter, AppliedEffect)>
+        {
+            { Effect.BasicAttack, (Targeter.FirstAlive, AppliedEffect.StandardDamage) }
+        };
+        #endregion
         // TODO: Associate Actions/Abilites to Characters
+        // Each character will have a list of their Effects
+        // Each list will be referenced in a Dictionary that stores each list
 
         #region Defunct
         //#region Player Deck Arrangements

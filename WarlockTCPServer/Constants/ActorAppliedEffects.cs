@@ -10,7 +10,7 @@ namespace WarlockTCPServer.Constants
         // TODO: Return a RQE command object
         public delegate object Effector(Actor source, Actor target);
         #region AppliedEffect Methods
-        public static object StandardAttack(Actor source, Actor target)
+        public static object StandardDamage(Actor source, Actor target)
         {
             Random random = new Random();
             var damage = source.Attack.CurrentValue;
@@ -32,7 +32,7 @@ namespace WarlockTCPServer.Constants
 
         public static Dictionary<string, Effector> AppliedEffects = new Dictionary<string, Effector>()
         {
-            { "Standard Attack", StandardAttack }
+            { "StandardDamage", StandardDamage }
         };
     }
 }
