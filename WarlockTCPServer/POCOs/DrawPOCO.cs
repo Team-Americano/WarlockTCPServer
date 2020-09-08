@@ -9,5 +9,6 @@ namespace WarlockTCPServer.POCOs
     public class DrawPOCO : POCO
     {
         public List<Actor> Hand { get; set; }
+        public short Round { get; set; }
     }
 }
