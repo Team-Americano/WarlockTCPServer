@@ -9,8 +9,7 @@ namespace WarlockTCPServer.Managers
 {
     public static class CombatManager
     {
-        // will return a queue of render command objects
-        public static Queue<object> AttackPhase(GameState game)
+        public static Queue<object> RunAttackPhase(GameState game)
         {
             Queue<object> RQE = new Queue<object>();
             // pass in a boolean for who goes first, this is temporarily hardcoded
@@ -51,7 +50,7 @@ namespace WarlockTCPServer.Managers
                 p2Actor = GetNextActor(game.Player2.Party);
 
             }
-            // TODO: Determine Points for the Round
+            AssignPoints(game);
             ResetStats(game);
             return RQE;
         }
@@ -91,6 +90,17 @@ namespace WarlockTCPServer.Managers
                 card.ManaCost.CurrentValue = card.ManaCost.BaseValue;
                 card.HasGone = false;
             }
+        }
+
+        private static void AssignPoints(GameState game)
+        {
+            int player1AliveActors = game.Player1.Party.Where(x => x.Health.CurrentValue > 0).Count();
+            int player2AliveActors = game.Player2.Party.Where(x => x.Health.CurrentValue > 0).Count();
+
+            if (player1AliveActors > player2AliveActors)
+                game.Player1.Score++;
+            else if (player1AliveActors < player2AliveActors)
+                game.Player2.Score++;
         }
     }
 }
