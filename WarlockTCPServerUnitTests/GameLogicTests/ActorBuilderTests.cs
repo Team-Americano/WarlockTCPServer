@@ -1,7 +1,7 @@
 ﻿using Xunit;
+using WarlockTCPServer.GameLogic.ActorComponents;
 using static WarlockTCPServer.Builders.ActorBuilder;
 using static WarlockTCPServer.Constants.DeckConstants;
-using WarlockTCPServer.GameLogic.ActorComponents;
 
 namespace WarlockTCPServerUnitTests.GameLogicTests
 {
@@ -30,7 +30,7 @@ namespace WarlockTCPServerUnitTests.GameLogicTests
             Assert.Equal(1, actual.ManaCost.BaseValue);
             Assert.Equal(1, actual.ManaCost.CurrentValue);
             Assert.Equal("Common", actual.Rarity);
-            Assert.Equal(null, actual.ActorAction);
+            Assert.NotNull(actual.ActorAction);
         }
 
         [Fact]
