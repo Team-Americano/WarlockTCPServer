@@ -1,17 +1,11 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading;
-using System.Threading.Tasks;
 using WarlockTCPServer.NetworkClasses;
-using WarlockTCPServer.POCOs;
 
 namespace WarlockTCPServer.Managers
 {
@@ -35,7 +29,6 @@ namespace WarlockTCPServer.Managers
             Packets = new List<Packet>();
 
             _listener = new TcpListener(_ipAddress, _port);
-
 
             _listener.Start();
             FindClients();
@@ -88,8 +81,23 @@ namespace WarlockTCPServer.Managers
                 Thread.Sleep(_timeStep);
             }
 
+            OnShutdown();
+        }
+
+        private static void OnShutdown()
+        {
             DisconnectClientAll();
             _listener.Stop();
+        }
+
+        private static bool IsHealthy()
+        {
+            return Running;
+        }
+
+        private static void OnMaintenanceScheduled(DateTimeOffset time)
+        {
+            Console.WriteLine("Maintenance scheduled at " + time.ToString());
         }
 
         public static void ReceivePackets()
