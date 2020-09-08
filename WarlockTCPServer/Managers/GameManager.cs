@@ -120,10 +120,10 @@ namespace WarlockTCPServer.Managers
             Console.WriteLine(poco.Line);
             var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
-            //if (client != null)
-            //{
-            //    NetworkManager.SendPacket(client.TcpClient, packet);
-            //}
+            if (client != null)
+            {
+                NetworkManager.SendPacket(client.TcpClient, packet);
+            }
 
             return Task.FromResult(0);
         }
@@ -164,10 +164,10 @@ namespace WarlockTCPServer.Managers
 
             var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
-            //if (playerId != null)
-            //{
-            //    NetworkManager.SendPacket(client.TcpClient, packet);
-            //}
+            if (playerId != null)
+            {
+                NetworkManager.SendPacket(client.TcpClient, packet);
+            }
 
 
             return Task.FromResult(0);
@@ -204,10 +204,10 @@ namespace WarlockTCPServer.Managers
 
             var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
-            //if (client != null)
-            //{
-            //    NetworkManager.SendPacket(client.TcpClient, outputPacket);
-            //}
+            if (client != null)
+            {
+                NetworkManager.SendPacket(client.TcpClient, outputPacket);
+            }
 
             return Task.FromResult(0);
         }
@@ -254,10 +254,10 @@ namespace WarlockTCPServer.Managers
 
             var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
-            //if (client != null)
-            //{
-            //    NetworkManager.SendPacket(client.TcpClient, outputPacket);
-            //}
+            if (client != null)
+            {
+                NetworkManager.SendPacket(client.TcpClient, outputPacket);
+            }
 
             return Task.FromResult(0);
         }
