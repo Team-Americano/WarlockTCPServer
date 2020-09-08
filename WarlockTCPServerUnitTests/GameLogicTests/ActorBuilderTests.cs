@@ -30,7 +30,7 @@ namespace WarlockTCPServerUnitTests.GameLogicTests
             Assert.Equal(1, actual.ManaCost.BaseValue);
             Assert.Equal(1, actual.ManaCost.CurrentValue);
             Assert.Equal("Common", actual.Rarity);
-            Assert.Equal(null, actual.ActorAction);
+            Assert.NotNull(actual.ActorAction);
         }
 
         [Fact]
