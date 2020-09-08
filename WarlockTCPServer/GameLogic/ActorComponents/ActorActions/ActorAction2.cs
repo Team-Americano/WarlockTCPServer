@@ -8,11 +8,11 @@ namespace WarlockTCPServer.GameLogic.ActorComponents.ActorActions
 {
     public class ActorAction2
     {
-        private Effect[] _effects;
+        public Effect[] Effects { get; set; }
 
         public ActorAction2(Effect[] effects)
         {
-            _effects = effects;
+            Effects = effects;
         }
 
         // TODO: Return collection of render commands
@@ -20,7 +20,7 @@ namespace WarlockTCPServer.GameLogic.ActorComponents.ActorActions
         public IEnumerable<object> Execute(Actor source, IEnumerable<Actor> friendlyParty, IEnumerable<Actor> enemyParty)
         {
             var commands = new List<object>(); // command objects
-            foreach (var effect in _effects)
+            foreach (var effect in Effects)
             {
                 var newTargets = Targeters[effect.Targeter](friendlyParty, enemyParty);
                 foreach (var newTarget in newTargets)

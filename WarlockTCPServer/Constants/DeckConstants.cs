@@ -53,7 +53,7 @@ namespace WarlockTCPServer.Constants
         #endregion
 
         #region Character Associations
-        public static Dictionary<Characters, (ActorOrigins, ActorClasses, ActorRarities, string name)> CharacterLegend = new Dictionary<Characters, (ActorOrigins, ActorClasses, ActorRarities, string name)>
+        public static Dictionary<Characters, (ActorOrigins origin, ActorClasses @class, ActorRarities rarity, string name)> CharacterLegend = new Dictionary<Characters, (ActorOrigins origin, ActorClasses @class, ActorRarities rarity, string name)>
         {
             // Undead
             { Characters.Skeleton, (ActorOrigins.Undead, ActorClasses.Warden, ActorRarities.Common, "Skeleton") },
@@ -180,7 +180,7 @@ namespace WarlockTCPServer.Constants
             BasicAttack = 1
         }
 
-        public static Dictionary<Effect, (Targeter, AppliedEffect)> Effects = new Dictionary<Effect, (Targeter, AppliedEffect)>
+        public static Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect)> Effects = new Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect)>
         {
             { Effect.BasicAttack, (Targeter.FirstAlive, AppliedEffect.StandardDamage) }
         };

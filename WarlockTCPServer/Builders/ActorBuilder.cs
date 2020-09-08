@@ -13,9 +13,9 @@ namespace WarlockTCPServer.Builders
         {
             // gathering character information
             var associations = CharacterLegend[cardChoice];
-            var originStats = OriginStats[associations.Item1];
-            var classStats = ClassStats[associations.Item2];
-            var rarityStats = RarityStats[associations.Item3];
+            var originStats = OriginStats[associations.origin];
+            var classStats = ClassStats[associations.@class];
+            var rarityStats = RarityStats[associations.rarity];
 
             Attribute health = new Attribute();
             Attribute defense = new Attribute();
@@ -25,7 +25,7 @@ namespace WarlockTCPServer.Builders
             Attribute manaCost = new Attribute();
 
             // attaching stats
-            string name = associations.Item4;
+            string name = associations.name;
             string origin = originStats.origin;
             string @class = classStats.@class;
             string rarity = rarityStats.rarity;
@@ -48,8 +48,8 @@ namespace WarlockTCPServer.Builders
             foreach (var effectDetailsReference in characterEffectDetailsList)
             {
                 var effectDetails = Effects[effectDetailsReference];
-                Targeter targeter = effectDetails.Item1;
-                AppliedEffect appliedEffect = effectDetails.Item2;
+                Targeter targeter = effectDetails.targeter;
+                AppliedEffect appliedEffect = effectDetails.appliedEffect;
                 Effect effect = new Effect(targeter, appliedEffect);
                 actorEffects.Add(effect);
             }
