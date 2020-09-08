@@ -10,9 +10,11 @@ namespace WarlockTCPServer.GameLogic.ActorComponents.ActorActions.ActorEffects
         {
             Random random = new Random();
             var damage = source.Attack.CurrentValue;
+
             // crit roll
             if (random.NextDouble() > (source.Precision.CurrentValue / 100))
                 damage *= 2;
+
             // defense calculation
             var damageReduction = 100 / (100 + target.Defense.CurrentValue);
             damage = (short)(damageReduction * damage);
