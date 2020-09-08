@@ -1,23 +1,18 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
+﻿using Microsoft.Playfab.Gaming.GSDK.CSharp;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading;
-using System.Threading.Tasks;
 using WarlockTCPServer.NetworkClasses;
-using WarlockTCPServer.POCOs;
 
 namespace WarlockTCPServer.Managers
 {
     public static class NetworkManager
     {
-        public static List<Client> Clients { get; set; }
+        public static List<ConnectedPlayer> Clients { get; set; }
 
         private static int _bufferSize = 1024 * 2;
         public static List<Packet> Packets { get; set; }
@@ -31,14 +26,28 @@ namespace WarlockTCPServer.Managers
 
         public static void Start()
         {
-            Clients = new List<Client>();
+            Clients = new List<ConnectedPlayer>();
             Packets = new List<Packet>();
 
             _listener = new TcpListener(_ipAddress, _port);
 
+            try
+            {
+                GameserverSDK.Start();
+            }
+            catch (GSDKInitializationException initEx)
+            {
+                GameserverSDK.LogMessage("Cannot start GSDK. Please make sure the MockAgent is running. ");
+                GameserverSDK.LogMessage($"Got Exception: {initEx.ToString()}");
+                return;
+            }
+
+            GameserverSDK.RegisterShutdownCallback(OnShutdown);
+            GameserverSDK.RegisterHealthCallback(IsHealthy);
+            GameserverSDK.RegisterMaintenanceCallback(OnMaintenanceScheduled);
 
             _listener.Start();
-            FindClients();
+            if(GameserverSDK.ReadyForPlayers()) FindClients();
             GameManager.Setup();
             Run();
         }
@@ -54,8 +63,13 @@ namespace WarlockTCPServer.Managers
                     var client = _listener.AcceptTcpClient();
                     client.SendBufferSize = _bufferSize;
                     client.ReceiveBufferSize = _bufferSize;
-                    var newClient = new Client(Clients.Count.ToString(), client);
+
+                    string playerTag = Clients.Count.ToString();
+                    var newClient = new Client(playerTag, client);
+
                     Clients.Add(newClient);
+                    GameserverSDK.UpdateConnectedPlayers(Clients);
+
                     SendHello(newClient.PlayerId, client);
                 }
 
@@ -88,15 +102,31 @@ namespace WarlockTCPServer.Managers
                 Thread.Sleep(_timeStep);
             }
 
+            OnShutdown();
+        }
+
+        private static void OnShutdown()
+        {
+            GameserverSDK.LogMessage("Shutting down...");
             DisconnectClientAll();
             _listener.Stop();
+        }
+
+        private static bool IsHealthy()
+        {
+            return Running;
+        }
+
+        private static void OnMaintenanceScheduled(DateTimeOffset time)
+        {
+            Console.WriteLine("Maintenance scheduled at " + time.ToString());
         }
 
         public static void ReceivePackets()
         {
             for (int i = 0; i < Clients.Count; i++)
             {
-                var client = Clients[i].TcpClient;
+                var client = GetTcpClient(i);
                 if (client.Available > 0)
                 {
                     byte[] incoming = new byte[client.Available];
@@ -119,19 +149,21 @@ namespace WarlockTCPServer.Managers
 
         public static void SendPacketsAll(Packet packet)
         {
-            foreach (var client in Clients)
+            for (int i = 0; i < Clients.Count; i++)
             {
-                SendPacket(client.TcpClient, packet);
+                SendPacket(GetTcpClient(i), packet);
             }
         }
 
         private static void CheckForDisconnects()
         {
-            foreach (var client in Clients)
+            for (int i = 0; i < Clients.Count; i++)
             {
-                if (!client.TcpClient.Connected)
+                var client = GetTcpClient(i);
+
+                if (!client.Connected)
                 {
-                    DisconnectClient(client);
+                    DisconnectClient(Clients[i]);
                 }
             }
         }
@@ -143,12 +175,18 @@ namespace WarlockTCPServer.Managers
             }
         }
 
-        private static void DisconnectClient(Client client)
+        private static void DisconnectClient(ConnectedPlayer client)
         {
             Clients.Remove(client);
-            var tcpClient = client.TcpClient;
+            var tcpClient = GetTcpClient(int.Parse(client.PlayerId));
             tcpClient.GetStream().Close();
             tcpClient.Close();
+        }
+
+        public static TcpClient GetTcpClient(int id)
+        {
+            var client = (Client)Clients[id];
+            return client.TcpClient;
         }
 
     }
