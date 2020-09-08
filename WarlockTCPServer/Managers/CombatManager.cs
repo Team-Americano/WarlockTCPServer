@@ -19,14 +19,30 @@ namespace WarlockTCPServer.Managers
             var p2Actor = GetNextActor(game.Player2.Party);
             while (p1Actor != null || p2Actor != null)
             {
-                if (p2Actor == null || p1Actor.Speed.CurrentValue > p2Actor.Speed.CurrentValue)
+                if (p1Actor == null)
+                {
+                    // invoke action and record rendering instructions
+                    //RQE.enqueue = p2Actor.ActorAction...
+                    RQE.Enqueue(p2Actor.ActorAction.Execute(p2Actor, game.Player2.Party, game.Player1.Party));
+                    p2Actor.HasGone = true;
+                    goto NextRound;
+                }
+                if (p2Actor == null)
+                {
+                    // invoke action and record rendering instructions
+                    //RQE.enqueue = p1Actor.ActorAction...
+                    RQE.Enqueue(p1Actor.ActorAction.Execute(p1Actor, game.Player1.Party, game.Player2.Party));
+                    p1Actor.HasGone = true;
+                    goto NextRound;
+                }
+                if (p1Actor.Speed.CurrentValue > p2Actor.Speed.CurrentValue)
                 {
                     // invoke action and record rendering instructions
                     //RQE.enqueue = p1Actor.ActorAction...
                     RQE.Enqueue(p1Actor.ActorAction.Execute(p1Actor, game.Player1.Party, game.Player2.Party));
                     p1Actor.HasGone = true;
                 }
-                else if (p1Actor == null || p1Actor.Speed.CurrentValue < p2Actor.Speed.CurrentValue)
+                else if (p2Actor.Speed.CurrentValue > p1Actor.Speed.CurrentValue)
                 {
                     // invoke action and record rendering instructions
                     //RQE.enqueue = p2Actor.ActorAction...
@@ -39,16 +55,19 @@ namespace WarlockTCPServer.Managers
                     {
                         // invoke action and record rendering instructions
                         //RQE.enqueue = p1Actor.ActorAction...
+                        RQE.Enqueue(p1Actor.ActorAction.Execute(p1Actor, game.Player1.Party, game.Player2.Party));
                         p1Actor.HasGone = true;
                     }
                     else
                     {
                         // invoke action and record rendering instructions
                         //RQE.enqueue = p2Actor.ActorAction...
+                        RQE.Enqueue(p2Actor.ActorAction.Execute(p2Actor, game.Player2.Party, game.Player1.Party));
                         p2Actor.HasGone = true;
                     }
                     player1Priority = !player1Priority;
                 }
+                NextRound:
                 p1Actor = GetNextActor(game.Player1.Party);
                 p2Actor = GetNextActor(game.Player2.Party);
 
@@ -61,6 +80,7 @@ namespace WarlockTCPServer.Managers
         private static Actor GetNextActor(IEnumerable<Actor> actors)
         {
             Actor highest = new Actor();
+            highest.Speed = new GameLogic.ActorComponents.Attribute();
             highest.Speed.CurrentValue = -10000;
             foreach (var actor in actors)
             {

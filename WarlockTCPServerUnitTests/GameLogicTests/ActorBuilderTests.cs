@@ -1,7 +1,7 @@
 ﻿using Xunit;
+using WarlockTCPServer.GameLogic.ActorComponents;
 using static WarlockTCPServer.Builders.ActorBuilder;
 using static WarlockTCPServer.Constants.DeckConstants;
-using WarlockTCPServer.GameLogic.ActorComponents;
 
 namespace WarlockTCPServerUnitTests.GameLogicTests
 {
