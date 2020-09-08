@@ -1,4 +1,5 @@
 ﻿using System;
+using WarlockTCPServer.GameLogic.ActorComponents.ActorActions;
 
 namespace WarlockTCPServer.GameLogic.ActorComponents
 {
@@ -15,7 +16,7 @@ namespace WarlockTCPServer.GameLogic.ActorComponents
         public Attribute Precision { get; set; }
         public Attribute ManaCost { get; set; }
         public string Rarity { get; set; }
-        public Action ActorAction { get; set; }
+        public ActorAction2 ActorAction { get; set; }
         public bool HasGone { get; set; } = false;
 
         public Actor()

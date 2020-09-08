@@ -11,6 +11,7 @@ namespace WarlockTCPServer.Managers
     {
         public static Queue<object> RunAttackPhase(GameState game)
         {
+            // TODO: Return a full queue of render commands
             Queue<object> RQE = new Queue<object>();
             // pass in a boolean for who goes first, this is temporarily hardcoded
             bool player1Priority = game.RoundCounter % 2 == 0 ? true : false;
@@ -22,12 +23,14 @@ namespace WarlockTCPServer.Managers
                 {
                     // invoke action and record rendering instructions
                     //RQE.enqueue = p1Actor.ActorAction...
+                    RQE.Enqueue(p1Actor.ActorAction.Execute(p1Actor, game.Player1.Party, game.Player2.Party));
                     p1Actor.HasGone = true;
                 }
                 else if (p1Actor == null || p1Actor.Speed.CurrentValue < p2Actor.Speed.CurrentValue)
                 {
                     // invoke action and record rendering instructions
                     //RQE.enqueue = p2Actor.ActorAction...
+                    RQE.Enqueue(p2Actor.ActorAction.Execute(p2Actor, game.Player2.Party, game.Player1.Party));
                     p2Actor.HasGone = true;
                 }
                 else

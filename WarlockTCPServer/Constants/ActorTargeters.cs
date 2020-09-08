@@ -8,14 +8,14 @@ namespace WarlockTCPServer.Constants
 {
     public static class ActorTargeters
     {
-        public delegate IEnumerable<Actor> Targeter(IEnumerable<Actor> actors);
+        public delegate IEnumerable<Actor> Targeter(IEnumerable<Actor> friendlyParty, IEnumerable<Actor> enemyParty);
         #region Targeter Methods
-        public static IEnumerable<Actor> FirstAlive(IEnumerable<Actor> enemies)
+        public static IEnumerable<Actor> FirstAlive(IEnumerable<Actor> friendlyParty, IEnumerable<Actor> enemyParty)
         {
-            foreach (var enemy in enemies)
+            foreach (var target in enemyParty)
             {
-                if (enemy.Health.CurrentValue > 0)
-                    return new Actor[] { enemy };
+                if (target.Health.CurrentValue > 0)
+                    return new Actor[] { target };
             }
             return new Actor[] { null };
         }
