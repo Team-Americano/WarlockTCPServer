@@ -16,16 +16,22 @@ namespace WarlockTCPServer.Constants
             var damage = source.Attack.CurrentValue;
 
             // crit roll
-            if (random.NextDouble() > (source.Precision.CurrentValue / 100))
+            double threshold = source.Precision.CurrentValue / 100d;
+            double hitChance = random.NextDouble();
+            if (hitChance < threshold)
                 damage *= 2;
 
             // defense calculation
-            var damageReduction = 100 / (100 + target.Defense.CurrentValue);
+            var damageReduction = 100d / (100 + target.Defense.CurrentValue);
             damage = (short)(damageReduction * damage);
 
             target.Health.CurrentValue -= damage;
-            // TODO: Add RQE for target damage or target death
 
+            // lowest health can be is 0
+            if (target.Health.CurrentValue < 0)
+                target.Health.CurrentValue = 0;
+
+            // TODO: Add RQE for target damage or target death
             return new object();
         }
         #endregion
