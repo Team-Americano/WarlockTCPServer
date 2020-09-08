@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Xunit;
+using System.Collections.Generic;
 using WarlockTCPServer.Builders;
 using static WarlockTCPServer.Constants.DeckPresets;
-using System.Collections;
-using System.Diagnostics;
 
 namespace WarlockTCPServerUnitTests.GameLogicTests
 {

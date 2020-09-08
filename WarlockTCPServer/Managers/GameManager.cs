@@ -118,7 +118,7 @@ namespace WarlockTCPServer.Managers
             TestPOCO poco = JsonConvert.DeserializeObject<TestPOCO>(packet.POCOJson);
             var commandId = (CommandId)packet.CommandId;
             Console.WriteLine(poco.Line);
-            var client = (Client)NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
             if (client != null)
             {
@@ -162,7 +162,7 @@ namespace WarlockTCPServer.Managers
                 POCOJson = JsonConvert.SerializeObject(drawPoco)
             };
 
-            var client = (Client)NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
             if (playerId != null)
             {
@@ -181,11 +181,11 @@ namespace WarlockTCPServer.Managers
 
             if (packet.PlayerId == Games[0].Player1.ClientId)
             {
-                //partyHandMana = DraftManager.DraftParty(Games[0].Player1, Games[0], poco.Party, poco.Hand, poco.Mana);
+                partyHandMana = DraftManager.DraftParty(Games[0].Player1, Games[0], poco.Party, poco.Hand, poco.Mana);
             }
             else if (packet.PlayerId == Games[0].Player2.ClientId)
             {
-                //partyHandMana = DraftManager.DraftParty(Games[0].Player2, Games[0], poco.Party, poco.Hand, poco.Mana);
+                partyHandMana = DraftManager.DraftParty(Games[0].Player2, Games[0], poco.Party, poco.Hand, poco.Mana);
             }
 
             DraftPOCO draftPoco = new DraftPOCO
@@ -202,7 +202,7 @@ namespace WarlockTCPServer.Managers
                 POCOJson = JsonConvert.SerializeObject(draftPoco)
             };
 
-            var client = (Client)NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
             if (client != null)
             {
@@ -233,16 +233,16 @@ namespace WarlockTCPServer.Managers
 
             if (packet.PlayerId == Games[0].Player1.ClientId)
             {
-                //party = PartyRepositionManager.PartyReposition(Games[0].Player1, poco.Party);
+                party = PartyRepositionManager.PartyReposition(Games[0].Player1, poco.Party);
             }
             else if (packet.PlayerId == Games[0].Player2.ClientId)
             {
-                //party = PartyRepositionManager.PartyReposition(Games[0].Player2, poco.Party);
+                party = PartyRepositionManager.PartyReposition(Games[0].Player2, poco.Party);
             }
 
             PartyRepositionPOCO outputPoco = new PartyRepositionPOCO()
             {
-                //Party = party
+                Party = party
             };
 
             Packet outputPacket = new Packet
@@ -252,7 +252,7 @@ namespace WarlockTCPServer.Managers
                 POCOJson = JsonConvert.SerializeObject(outputPoco)
             };
 
-            var client = (Client)NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
             if (client != null)
             {

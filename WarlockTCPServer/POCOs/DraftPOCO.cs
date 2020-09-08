@@ -8,5 +8,7 @@ namespace WarlockTCPServer.POCOs
     public class DraftPOCO : POCO
     {
         public List<Actor> Party { get; set; }
+        public List<Actor> Hand { get; set; }
+        public short Mana { get; set; }
     }
 }
