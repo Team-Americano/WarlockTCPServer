@@ -30,9 +30,9 @@ namespace WarlockTCPServer.Constants
         }
         #endregion
 
-        public static Dictionary<string, Effector> AppliedEffects = new Dictionary<string, Effector>()
+        public static Dictionary<DeckConstants.AppliedEffect, Effector> AppliedEffects = new Dictionary<DeckConstants.AppliedEffect, Effector>()
         {
-            { "StandardDamage", StandardDamage }
+            { DeckConstants.AppliedEffect.StandardDamage, StandardDamage }
         };
     }
 }

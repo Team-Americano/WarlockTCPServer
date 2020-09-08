@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using static WarlockTCPServer.Constants.DeckConstants;
 
 namespace WarlockTCPServer.GameLogic.ActorComponents.ActorActions
 {
     public class Effect
     {
-        public string Targeter { get; set; }
-        public string AppliedEffect { get; set; }
+        public Targeter Targeter { get; set; }
+        public AppliedEffect AppliedEffect { get; set; }
 
-        public Effect(string targeter, string appliedEffect)
+        public Effect(Targeter targeter, AppliedEffect appliedEffect)
         {
             Targeter = targeter;
             AppliedEffect = appliedEffect;

@@ -185,9 +185,55 @@ namespace WarlockTCPServer.Constants
             { Effect.BasicAttack, (Targeter.FirstAlive, AppliedEffect.StandardDamage) }
         };
         #endregion
-        // TODO: Associate Actions/Abilites to Characters
-        // Each character will have a list of their Effects
-        // Each list will be referenced in a Dictionary that stores each list
+
+        #region Character's Effects
+        public static Dictionary<Characters, List<Effect>> CharacterEffects = new Dictionary<Characters, List<Effect>>
+        {
+            // Undead
+            { Characters.Skeleton, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Zombie, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Ghost, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Wraith, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Revenant, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Lich, new List<Effect> { Effect.BasicAttack } },
+            // Glacial
+            { Characters.Snowfriend, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Ice_Wasp, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Frost_Sprite, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Ice_Pike, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Glacial_Guard, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Ice_Drake, new List<Effect> { Effect.BasicAttack } },
+            // Infernal
+            { Characters.Lemure, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Imp, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Inferno, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Incubus, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Gobbler, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Pit_Lord, new List<Effect> { Effect.BasicAttack } },
+            // Bestial
+            { Characters.Dire_Wolf, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Bully_Toad, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Black_Asp, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Spider_Queen, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Arch_Druid, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Vine_Behemoth, new List<Effect> { Effect.BasicAttack } },
+            // Aberrant
+            { Characters.Slime, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Gazer, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Morlock, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Deep_Hound, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Mind_Eater, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Deep_Tyrant, new List<Effect> { Effect.BasicAttack } },
+            // Aquatic
+            { Characters.Mer_Guard, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Sea_Worm, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Man_O_War, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Chomper, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Kraken, new List<Effect> { Effect.BasicAttack } },
+            { Characters.Trident_King, new List<Effect> { Effect.BasicAttack } }
+        };
+        #endregion
+
 
         #region Defunct
         //#region Player Deck Arrangements

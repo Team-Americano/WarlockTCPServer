@@ -1,4 +1,8 @@
-﻿using WarlockTCPServer.GameLogic.ActorComponents;
+﻿using System.Collections.Generic;
+using WarlockTCPServer.GameLogic.ActorComponents;
+using WarlockTCPServer.GameLogic.ActorComponents.ActorActions;
+using Effect = WarlockTCPServer.GameLogic.ActorComponents.ActorActions.Effect;
+using EffectEnum = WarlockTCPServer.Constants.DeckConstants.Effect;
 using static WarlockTCPServer.Constants.DeckConstants;
 
 namespace WarlockTCPServer.Builders
@@ -7,6 +11,7 @@ namespace WarlockTCPServer.Builders
     {
         public static Actor Build(Characters cardChoice, short cardId)
         {
+            // gathering character information
             var associations = CharacterLegend[cardChoice];
             var originStats = OriginStats[associations.Item1];
             var classStats = ClassStats[associations.Item2];
@@ -19,6 +24,7 @@ namespace WarlockTCPServer.Builders
             Attribute precision = new Attribute();
             Attribute manaCost = new Attribute();
 
+            // attaching stats
             string name = associations.Item4;
             string origin = originStats.origin;
             string @class = classStats.@class;
@@ -36,8 +42,21 @@ namespace WarlockTCPServer.Builders
             manaCost.BaseValue = rarityStats.manaCost;
             manaCost.CurrentValue = rarityStats.manaCost;
 
-            // TODO: Add actions/abilites to actor instantiation
-            Actor actor = new Actor(cardId, origin, @class, name, health, defense, attack, speed, precision, manaCost, rarity, null);
+            // attaching effects
+            List<Effect> actorEffects = new List<Effect>();
+            var characterEffectDetailsList = CharacterEffects[cardChoice];
+            foreach (var effectDetailsReference in characterEffectDetailsList)
+            {
+                var effectDetails = Effects[effectDetailsReference];
+                Targeter targeter = effectDetails.Item1;
+                AppliedEffect appliedEffect = effectDetails.Item2;
+                Effect effect = new Effect(targeter, appliedEffect);
+                actorEffects.Add(effect);
+            }
+            Effect[] effectArray = actorEffects.ToArray();
+            ActorAction2 actorAction = new ActorAction2(effectArray);
+
+            Actor actor = new Actor(cardId, origin, @class, name, health, defense, attack, speed, precision, manaCost, rarity, actorAction);
             return actor;
         }
 

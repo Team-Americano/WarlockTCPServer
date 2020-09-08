@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using WarlockTCPServer.GameLogic.ActorComponents;
 
 namespace WarlockTCPServer.Constants
@@ -21,9 +18,9 @@ namespace WarlockTCPServer.Constants
         }
         #endregion
 
-        public static Dictionary<string, Targeter> Targeters = new Dictionary<string, Targeter>()
+        public static Dictionary<DeckConstants.Targeter, Targeter> Targeters = new Dictionary<DeckConstants.Targeter, Targeter>()
         {
-            { "FirstAlive", FirstAlive }
+            { DeckConstants.Targeter.FirstAlive, FirstAlive }
         };
 
 

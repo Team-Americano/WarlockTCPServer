@@ -37,7 +37,7 @@ namespace WarlockTCPServer.GameLogic.ActorComponents
             Attribute precision,
             Attribute manaCost,
             string rarity,
-            Action actorAction
+            ActorAction2 actorAction
         )
         {
             CardId = cardId;
