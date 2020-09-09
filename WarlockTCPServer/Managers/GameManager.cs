@@ -51,8 +51,6 @@ namespace WarlockTCPServer.Managers
                 { CommandId.partyReposition, PartyReposition },
                 { CommandId.acknowlegdeReposition, AcknowledgeReposition }
             };
-
-            //SetupNewGame();
         }
 
         public static void SetupNewGame()
