@@ -4,77 +4,82 @@ using System.Linq;
 using System.Text;
 using WarlockTCPServer.GameLogic;
 using WarlockTCPServer.GameLogic.ActorComponents;
+using WarlockTCPServer.POCOs;
 
 namespace WarlockTCPServer.Managers
 {
     public static class CombatManager
     {
-        public static Queue<object> RunAttackPhase(GameState game)
+        public static RenderQueueEntry[] RunAttackPhase(GameState game)
         {
             // TODO: Return a full queue of render commands
-            Queue<object> RQE = new Queue<object>();
+            List<RenderQueueEntry> RQE = new List<RenderQueueEntry>();
             // pass in a boolean for who goes first, this is temporarily hardcoded
             bool player1Priority = game.RoundCounter % 2 == 0 ? true : false;
             var p1Actor = GetNextActor(game.Player1.Party);
             var p2Actor = GetNextActor(game.Player2.Party);
+            Actor nextActor = null;
+            List<Actor> friendlyParty = new List<Actor>();
+            List<Actor> enemyParty = new List<Actor>();
+
             while (p1Actor != null || p2Actor != null)
             {
                 if (p1Actor == null)
                 {
-                    // invoke action and record rendering instructions
-                    //RQE.enqueue = p2Actor.ActorAction...
-                    RQE.Enqueue(p2Actor.ActorAction.Execute(p2Actor, game.Player2.Party, game.Player1.Party));
-                    p2Actor.HasGone = true;
-                    goto NextRound;
+                    nextActor = p2Actor;
+                    friendlyParty = game.Player2.Party;
+                    enemyParty = game.Player1.Party;
+                    goto ExecuteTurn;
                 }
+
                 if (p2Actor == null)
                 {
-                    // invoke action and record rendering instructions
-                    //RQE.enqueue = p1Actor.ActorAction...
-                    RQE.Enqueue(p1Actor.ActorAction.Execute(p1Actor, game.Player1.Party, game.Player2.Party));
-                    p1Actor.HasGone = true;
-                    goto NextRound;
+                    nextActor = p1Actor;
+                    friendlyParty = game.Player1.Party;
+                    enemyParty = game.Player2.Party;
+                    goto ExecuteTurn;
                 }
+
                 if (p1Actor.Speed.CurrentValue > p2Actor.Speed.CurrentValue)
                 {
-                    // invoke action and record rendering instructions
-                    //RQE.enqueue = p1Actor.ActorAction...
-                    RQE.Enqueue(p1Actor.ActorAction.Execute(p1Actor, game.Player1.Party, game.Player2.Party));
-                    p1Actor.HasGone = true;
+                    nextActor = p1Actor;
+                    friendlyParty = game.Player1.Party;
+                    enemyParty = game.Player2.Party;
                 }
                 else if (p2Actor.Speed.CurrentValue > p1Actor.Speed.CurrentValue)
                 {
-                    // invoke action and record rendering instructions
-                    //RQE.enqueue = p2Actor.ActorAction...
-                    RQE.Enqueue(p2Actor.ActorAction.Execute(p2Actor, game.Player2.Party, game.Player1.Party));
-                    p2Actor.HasGone = true;
+                    nextActor = p2Actor;
+                    friendlyParty = game.Player2.Party;
+                    enemyParty = game.Player1.Party;
                 }
                 else
                 {
                     if (player1Priority)
                     {
-                        // invoke action and record rendering instructions
-                        //RQE.enqueue = p1Actor.ActorAction...
-                        RQE.Enqueue(p1Actor.ActorAction.Execute(p1Actor, game.Player1.Party, game.Player2.Party));
-                        p1Actor.HasGone = true;
+                        nextActor = p1Actor;
+                        friendlyParty = game.Player1.Party;
+                        enemyParty = game.Player2.Party;
                     }
                     else
                     {
-                        // invoke action and record rendering instructions
-                        //RQE.enqueue = p2Actor.ActorAction...
-                        RQE.Enqueue(p2Actor.ActorAction.Execute(p2Actor, game.Player2.Party, game.Player1.Party));
-                        p2Actor.HasGone = true;
+                        nextActor = p2Actor;
+                        friendlyParty = game.Player2.Party;
+                        enemyParty = game.Player1.Party;
                     }
+
                     player1Priority = !player1Priority;
                 }
-                NextRound:
+
+                ExecuteTurn:
+                RQE.AddRange(nextActor.ActorAction.Execute(nextActor, friendlyParty, enemyParty));
+                nextActor.HasGone = true;
                 p1Actor = GetNextActor(game.Player1.Party);
                 p2Actor = GetNextActor(game.Player2.Party);
 
             }
             AssignPoints(game);
             ResetStats(game);
-            return RQE;
+            return RQE.ToArray();
         }
 
         private static Actor GetNextActor(IEnumerable<Actor> actors)
