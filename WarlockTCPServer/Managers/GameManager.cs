@@ -101,7 +101,7 @@ namespace WarlockTCPServer.Managers
                 Draw(Games[0].Player1.ClientId);
                 WaitForDraftPacket(Games[0].Player1.ClientId);
 
-                UpdateAllClient(Games[0]);
+                //UpdateAllClient(Games[0]);
 
                 Draw(Games[0].Player2.ClientId);
                 WaitForDraftPacket(Games[0].Player2.ClientId);
@@ -111,19 +111,19 @@ namespace WarlockTCPServer.Managers
                 Draw(Games[0].Player2.ClientId);
                 WaitForDraftPacket(Games[0].Player2.ClientId);
 
-                UpdateAllClient(Games[0]);
+                //UpdateAllClient(Games[0]);
 
                 Draw(Games[0].Player1.ClientId);
                 WaitForDraftPacket(Games[0].Player1.ClientId);
             }
 
-            UpdateAllClient(Games[0]);
+            //UpdateAllClient(Games[0]);
 
             Combat();
 
             EndOfRoundLogic(Games[0]);
 
-            UpdateAllClient(Games[0]); // Not sure if we need this.
+            //UpdateAllClient(Games[0]); // Not sure if we need this.
 
 
             //while (NetworkManager.Packets.Count > 0)
@@ -354,8 +354,7 @@ namespace WarlockTCPServer.Managers
 
             CombatPOCO combatPoco = new CombatPOCO()
             {
-                RQE = combatQueue,
-                Game = Games[0]
+                RenderQueueEntries = combatQueue
             };
 
             Packet packet = new Packet()
@@ -370,6 +369,7 @@ namespace WarlockTCPServer.Managers
             return Task.FromResult(0);
         }
 
+
         private static Task UpdateAllClient(GameState game)
         {
             GameStatePOCO gameStatePOCO = new GameStatePOCO()
@@ -381,16 +381,16 @@ namespace WarlockTCPServer.Managers
                 RoundCounter = Games[0].RoundCounter
             };
 
-            Packet packet = new Packet()
-            {
-                CommandId = (short)CommandId.gameStateUpdate,
-                POCOJson = JsonConvert.SerializeObject(gameStatePOCO)
-            };
+        //    Packet packet = new Packet()
+        //    {
+        //        CommandId = (short)CommandId.gameStateUpdate,
+        //        POCOJson = JsonConvert.SerializeObject(gameStatePOCO)
+        //    };
 
-            NetworkManager.SendPacketsAll(packet);
+        //    NetworkManager.SendPacketsAll(packet);
 
-            return Task.FromResult(0);
-        }
+        //    return Task.FromResult(0);
+        //}
 
         private static Task EndOfRoundLogic(GameState game)
         {
@@ -406,7 +406,7 @@ namespace WarlockTCPServer.Managers
 
             Games[0].RoundCounter++;
 
-            EndOfRoundManager.IncreaseMana(Games[0]);
+            //EndOfRoundManager.IncreaseMana(Games[0]);
 
             return Task.FromResult(0);
         }
