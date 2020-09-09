@@ -11,15 +11,7 @@ namespace WarlockTCPServer.Managers
     {
         public static Tuple<List<Actor>, List<Actor>, short> DraftParty(Player player, GameState game, List<Actor> party, List<Actor> hand, short mana)
         {
-            short manaCounter = 2;
-            short howManyRoundsIncreaseManaCount = 2;
-
-            if (game.RoundCounter % howManyRoundsIncreaseManaCount == 0)
-            {
-                manaCounter++;
-            }
-
-            player.Mana += manaCounter;
+            player.Mana = mana;
             player.Hand = hand;
             player.Party = party;
 
