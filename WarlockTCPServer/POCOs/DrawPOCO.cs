@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -8,7 +9,10 @@ namespace WarlockTCPServer.POCOs
 {
     public class DrawPOCO : POCO
     {
-        public List<Actor> Hand { get; set; }
-        public short Round { get; set; }
+        [JsonProperty("Hand")]
+        public List<Actor> Hand;
+
+        [JsonProperty("Round")]
+        public short Round;
     }
 }

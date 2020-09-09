@@ -13,7 +13,7 @@ namespace WarlockTCPServer.Managers
     {
         public static List<Client> Clients { get; set; }
 
-        private static int _bufferSize = 1024 * 2;
+        private static int _bufferSize = 1024 * 4;
         public static List<Packet> Packets { get; set; }
         private static int _maxPlayers = 1;
         private static int _port = 28852;
@@ -128,6 +128,7 @@ namespace WarlockTCPServer.Managers
             string jsonStr = JsonConvert.SerializeObject(packet);
             byte[] buffer = Encoding.UTF8.GetBytes(jsonStr);
             tcpClient.GetStream().Write(buffer, 0, buffer.Length);
+            Console.WriteLine("Packet Was Sent");
         }
 
         public static void SendPacketsAll(Packet packet)
