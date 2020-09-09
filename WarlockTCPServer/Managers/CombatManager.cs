@@ -15,7 +15,7 @@ namespace WarlockTCPServer.Managers
             // TODO: Return a full queue of render commands
             List<RenderQueueEntry> RQE = new List<RenderQueueEntry>();
             // pass in a boolean for who goes first, this is temporarily hardcoded
-            bool player1Priority = game.RoundCounter % 2 == 0 ? true : false;
+            bool player1Priority = game.RoundCounter % 1 == 0 ? true : false;
             var p1Actor = GetNextActor(game.Player1.Party);
             var p2Actor = GetNextActor(game.Player2.Party);
             Actor nextActor = null;

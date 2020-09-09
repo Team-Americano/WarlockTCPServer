@@ -60,6 +60,7 @@ namespace WarlockTCPServer.Managers
             Games.Add(new GameState());
 
             Games[0].Player1.ClientId = NetworkManager.Clients[0].PlayerId;
+            Games[0].RoundCounter = 1;
             // Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId; Commented out for testing
 
             Games[0].Player1.Mana = 0;
@@ -94,7 +95,7 @@ namespace WarlockTCPServer.Managers
             // 13. Updated client based off of end round logic
             // ================================================
 
-            bool player1Priority = Games[0].RoundCounter % 2 == 0 ? true : false;
+            bool player1Priority = Games[0].RoundCounter % 1 == 0 ? true : false;
             if (player1Priority)
             {
                 Draw(Games[0].Player1.ClientId);
@@ -233,26 +234,26 @@ namespace WarlockTCPServer.Managers
                 partyHandMana = DraftManager.DraftParty(Games[0].Player2, Games[0], poco.Party, poco.Hand, poco.Mana);
             }
 
-            DraftPOCO draftPoco = new DraftPOCO
-            {
-                Party = partyHandMana.Item1,
-                Hand = partyHandMana.Item2,
-                Mana = partyHandMana.Item3
-            };
+            //DraftPOCO draftPoco = new DraftPOCO
+            //{
+            //    Party = partyHandMana.Item1,
+            //    Hand = partyHandMana.Item2,
+            //    Mana = partyHandMana.Item3
+            //};
 
-            Packet outputPacket = new Packet
-            {
-                CommandId = (short)CommandId.draft,
-                PlayerId = packet.PlayerId,
-                POCOJson = JsonConvert.SerializeObject(draftPoco)
-            };
+            //Packet outputPacket = new Packet
+            //{
+            //    CommandId = (short)CommandId.draft,
+            //    PlayerId = packet.PlayerId,
+            //    POCOJson = JsonConvert.SerializeObject(draftPoco)
+            //};
 
-            var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
+            //var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
 
-            if (client != null)
-            {
-                NetworkManager.SendPacket(client.TcpClient, outputPacket);
-            }
+            //if (client != null)
+            //{
+            //    NetworkManager.SendPacket(client.TcpClient, outputPacket);
+            //}
 
             return Task.FromResult(0);
         }
@@ -329,6 +330,9 @@ namespace WarlockTCPServer.Managers
                 {
                     draftPacket = NetworkManager.Packets.Where(x => x.CommandId == (short)CommandId.draft && x.PlayerId == playerId).FirstOrDefault();
                 }
+
+                NetworkManager.ReceivePackets();
+
                 Thread.Sleep(100);
             }
 
@@ -365,12 +369,17 @@ namespace WarlockTCPServer.Managers
             return Task.FromResult(0);
         }
 
-        //private static Task UpdateAllClient(GameState game)
-        //{
-        //    GameStatePOCO gameStatePOCO = new GameStatePOCO()
-        //    {
-        //        Game = Games[0]
-        //    };
+
+        private static Task UpdateAllClient(GameState game)
+        {
+            GameStatePOCO gameStatePOCO = new GameStatePOCO()
+            {
+                Player1Party = Games[0].Player1.Party,
+                Player1Id = Games[0].Player1.ClientId,
+                Player2Party = Games[0].Player2.Party,
+                Player2Id = Games[0].Player2.ClientId,
+                RoundCounter = Games[0].RoundCounter
+            };
 
         //    Packet packet = new Packet()
         //    {
