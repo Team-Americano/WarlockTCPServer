@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WarlockTCPServer.GameLogic;
 using WarlockTCPServer.GameLogic.ActorComponents;
@@ -16,6 +17,7 @@ namespace WarlockTCPServer.Managers
     // Draft Phase 300
     // Reposition Phase 400
     // Combat Commands 500
+    // State update 600
     public enum CommandId
     {
         test = 42,
@@ -24,7 +26,9 @@ namespace WarlockTCPServer.Managers
         draft = 300,
         acknowlegdeDraft = 301,
         partyReposition = 400,
-        acknowlegdeReposition = 401
+        acknowlegdeReposition = 401,
+        combat = 500,
+        gameStateUpdate = 600
     }
 
     public static class GameManager
@@ -47,7 +51,7 @@ namespace WarlockTCPServer.Managers
                 { CommandId.acknowlegdeReposition, AcknowledgeReposition }
             };
 
-            SetupNewGame();
+            //SetupNewGame();
         }
 
         public static void SetupNewGame()
@@ -60,7 +64,7 @@ namespace WarlockTCPServer.Managers
             // Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId; Commented out for testing
 
             Games[0].Player1.Mana = 0;
-            Games[0].Player2.Mana = 0; 
+            Games[0].Player2.Mana = 0;
 
             Games[0].Player1.Score = 0;
             Games[0].Player2.Score = 0;
@@ -91,19 +95,117 @@ namespace WarlockTCPServer.Managers
             // 13. Updated client based off of end round logic
             // ================================================
 
-            while (NetworkManager.Packets.Count > 0)
+            bool player1Priority = Games[0].RoundCounter % 2 == 0 ? true : false;
+            if (player1Priority)
             {
-                lock (NetworkManager.Packets)
-                {
-                    foreach (var packet in NetworkManager.Packets)
-                    {
-                        HandleCommand(packet);
-                    }
-                }
+                Draw(Games[0].Player1.ClientId);
+                WaitForDraftPacket(Games[0].Player1.ClientId);
+
+                UpdateAllClient(Games[0]);
+
+                Draw(Games[0].Player2.ClientId);
+                WaitForDraftPacket(Games[0].Player2.ClientId);
+
+                Combat();
+
+                UpdateAllClient(Games[0]);
+
             }
+            else
+            {
+                Draw(Games[0].Player2.ClientId);
+                WaitForDraftPacket(Games[0].Player2.ClientId);
+
+                UpdateAllClient(Games[0]);
+
+                Draw(Games[0].Player1.ClientId);
+                WaitForDraftPacket(Games[0].Player1.ClientId);
+
+                Combat();
+
+                UpdateAllClient(Games[0]);
+            }
+
+            //EndOfRoundLogic(Games[0]);
+
+
+            //while (NetworkManager.Packets.Count > 0)
+            //{
+            //    lock (NetworkManager.Packets)
+            //    {
+            //        foreach (var packet in NetworkManager.Packets)
+            //        {
+            //            HandleCommand(packet);
+            //        }
+            //    }
+            //}
         }
 
-        public static void HandleCommand(Packet packet)
+        private static Task WaitForDraftPacket(string playerId)
+        {
+            // ================= Yes we know its hacky =====================
+            Packet draftPacket = null;
+
+            while (draftPacket == null)
+            {
+                draftPacket = NetworkManager.Packets.Where(x => x.CommandId == (short)CommandId.draft && x.PlayerId == playerId).FirstOrDefault();
+
+                Thread.Sleep(100);
+            }
+
+            if (draftPacket.CommandId == (short)CommandId.draft)
+            {
+                HandleCommand(draftPacket);
+            }
+            else
+            {
+                throw new Exception("There was an error in the order");
+            }
+
+            return Task.FromResult(0);
+        }
+
+        private static Task Combat()
+        {
+            var combatQueue = CombatManager.RunAttackPhase(Games[0]);
+
+            CombatPOCO combatPoco = new CombatPOCO()
+            {
+                RQE = combatQueue,
+                Game = Games[0]
+            };
+
+            Packet packet = new Packet()
+            {
+                CommandId = (short)CommandId.combat,
+                POCOJson = JsonConvert.SerializeObject(combatPoco)
+                // May need to add player
+            };
+
+            NetworkManager.SendPacketsAll(packet);
+
+            return Task.FromResult(0);
+        }
+
+        private static Task UpdateAllClient(GameState game)
+        {
+            GameStatePOCO gameStatePOCO = new GameStatePOCO()
+            {
+                Game = Games[0]
+            };
+
+            Packet packet = new Packet()
+            {
+                CommandId = (short)CommandId.gameStateUpdate,
+                POCOJson = JsonConvert.SerializeObject(gameStatePOCO)
+            };
+
+            NetworkManager.SendPacketsAll(packet);
+
+            return Task.FromResult(0);
+        }
+
+        public static Task HandleCommand(Packet packet)
         {
             var commandId = (CommandId)packet.CommandId;
 
@@ -111,6 +213,8 @@ namespace WarlockTCPServer.Managers
             {
                 _commands[commandId].Invoke(packet);
             }
+
+            return Task.FromResult(0);
         }
 
         public static Task Test(Packet packet)
@@ -135,7 +239,6 @@ namespace WarlockTCPServer.Managers
             return Task.FromResult(0);
         }
 
-
         public static Task Draw(string playerId)
         {
             List<Actor> hand = new List<Actor>();
@@ -153,7 +256,8 @@ namespace WarlockTCPServer.Managers
                 throw new Exception("There was no player selected.");
             }
 
-            DrawPOCO drawPoco = new DrawPOCO {
+            DrawPOCO drawPoco = new DrawPOCO
+            {
                 Hand = hand,
                 Round = Games[0].RoundCounter
             };
@@ -170,6 +274,10 @@ namespace WarlockTCPServer.Managers
             if (playerId != null)
             {
                 NetworkManager.SendPacket(client.TcpClient, packet);
+            }
+            else
+            {
+                throw new Exception("There was an error with the hand");
             }
 
             return Task.FromResult(0);

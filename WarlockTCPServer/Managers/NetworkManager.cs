@@ -31,8 +31,8 @@ namespace WarlockTCPServer.Managers
             _listener = new TcpListener(_ipAddress, _port);
 
             _listener.Start();
+            GameManager.Setup(); // Might break
             FindClients();
-            GameManager.Setup();
             Run();
         }
 
@@ -53,6 +53,11 @@ namespace WarlockTCPServer.Managers
                 }
 
                 Thread.Sleep(_timeStep);
+            }
+
+            if(Clients.Count == _maxPlayers)
+            {
+                GameManager.SetupNewGame();
             }
         }
 
