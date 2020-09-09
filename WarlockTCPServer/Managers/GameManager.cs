@@ -153,7 +153,10 @@ namespace WarlockTCPServer.Managers
                 throw new Exception("There was no player selected.");
             }
 
-            DrawPOCO drawPoco = new DrawPOCO { Hand = hand };
+            DrawPOCO drawPoco = new DrawPOCO {
+                Hand = hand,
+                Round = Games[0].RoundCounter
+            };
 
             Packet packet = new Packet
             {
@@ -168,7 +171,6 @@ namespace WarlockTCPServer.Managers
             {
                 NetworkManager.SendPacket(client.TcpClient, packet);
             }
-
 
             return Task.FromResult(0);
         }
