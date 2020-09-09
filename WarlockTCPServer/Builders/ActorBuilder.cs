@@ -50,7 +50,8 @@ namespace WarlockTCPServer.Builders
                 var effectDetails = Effects[effectDetailsReference];
                 Targeter targeter = effectDetails.targeter;
                 AppliedEffect appliedEffect = effectDetails.appliedEffect;
-                Effect effect = new Effect(targeter, appliedEffect);
+                string animation = effectDetails.animation;
+                Effect effect = new Effect(targeter, appliedEffect, animation);
                 actorEffects.Add(effect);
             }
             Effect[] effectArray = actorEffects.ToArray();

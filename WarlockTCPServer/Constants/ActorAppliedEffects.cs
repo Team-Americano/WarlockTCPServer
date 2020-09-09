@@ -7,10 +7,10 @@ namespace WarlockTCPServer.Constants
 {
     public static class ActorAppliedEffects
     {
-        // TODO: Return a RQE command object
-        public delegate object Effector(Actor source, Actor target);
+        public delegate short Effector(Actor source, Actor target);
+
         #region AppliedEffect Methods
-        public static object StandardDamage(Actor source, Actor target)
+        public static short StandardDamage(Actor source, Actor target)
         {
             Random random = new Random();
             var damage = source.Attack.CurrentValue;
@@ -32,7 +32,7 @@ namespace WarlockTCPServer.Constants
                 target.Health.CurrentValue = 0;
 
             // TODO: Add RQE for target damage or target death
-            return new object();
+            return target.CardId;
         }
         #endregion
 

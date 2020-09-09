@@ -180,9 +180,9 @@ namespace WarlockTCPServer.Constants
             BasicAttack = 1
         }
 
-        public static Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect)> Effects = new Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect)>
+        public static Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect, string animation)> Effects = new Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect, string animation)>
         {
-            { Effect.BasicAttack, (Targeter.FirstAlive, AppliedEffect.StandardDamage) }
+            { Effect.BasicAttack, (Targeter.FirstAlive, AppliedEffect.StandardDamage, "BasicAttack" ) }
         };
         #endregion
 

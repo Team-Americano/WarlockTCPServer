@@ -12,15 +12,27 @@ namespace WarlockTCPServer.Builders
         private Actor[] FinalDeck;
         private List<Actor> RawDeck = new List<Actor>();
 
+        /// <summary>
+        /// Gets a premade deck from DeckPresets, then builds it
+        /// </summary>
+        /// <param name="deckName">Name for DeckPreset</param>
+        /// <returns>Deck as an array of actors</returns>
         public Actor[] Build(string deckName)
         {
             var deckScaffold = Presets[deckName];
             return Build(deckScaffold);
         }
+
+        /// <summary>
+        /// Builds a deck given a list of characters and the number of times they appear in deck
+        /// </summary>
+        /// <param name="deckScaffold">List of characters and the number of times they appear in deck</param>
+        /// <returns>Deck as an array of actors</returns>
         public Actor[] Build(List<(Characters, int)> deckScaffold)
         {
             var random = new Random();
             short cardId = 0;
+
             for (int i = 0; i < deckScaffold.Count; i++)
             {
                 for (int j = 0; j < deckScaffold[i].Item2; j++)
@@ -31,6 +43,7 @@ namespace WarlockTCPServer.Builders
                     RawDeck.Insert(randomIndex, actor);
                 }
             }
+
             FinalDeck = RawDeck.ToArray();
             return FinalDeck;
         }
