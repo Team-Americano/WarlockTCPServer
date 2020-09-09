@@ -329,6 +329,9 @@ namespace WarlockTCPServer.Managers
                 {
                     draftPacket = NetworkManager.Packets.Where(x => x.CommandId == (short)CommandId.draft && x.PlayerId == playerId).FirstOrDefault();
                 }
+
+                NetworkManager.ReceivePackets();
+
                 Thread.Sleep(100);
             }
 
