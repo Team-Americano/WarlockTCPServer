@@ -195,11 +195,13 @@ namespace WarlockTCPServer.Managers
                 Round = Games[0].RoundCounter
             };
 
+            var pocoStr = JsonConvert.SerializeObject(drawPoco);
+
             Packet packet = new Packet
             {
                 CommandId = (short)CommandId.draw,
                 PlayerId = playerId,
-                POCOJson = JsonConvert.SerializeObject(drawPoco)
+                POCOJson = pocoStr
             };
 
             var client = NetworkManager.Clients.Where(x => x.PlayerId == packet.PlayerId).FirstOrDefault();
