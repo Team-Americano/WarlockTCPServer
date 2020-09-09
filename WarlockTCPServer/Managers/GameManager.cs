@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,11 +106,6 @@ namespace WarlockTCPServer.Managers
 
                 Draw(Games[0].Player2.ClientId);
                 WaitForDraftPacket(Games[0].Player2.ClientId);
-
-                Combat();
-
-                UpdateAllClient(Games[0]);
-
             }
             else
             {
@@ -120,13 +116,15 @@ namespace WarlockTCPServer.Managers
 
                 Draw(Games[0].Player1.ClientId);
                 WaitForDraftPacket(Games[0].Player1.ClientId);
-
-                Combat();
-
-                UpdateAllClient(Games[0]);
             }
 
-            //EndOfRoundLogic(Games[0]);
+            UpdateAllClient(Games[0]);
+
+            Combat();
+
+            EndOfRoundLogic(Games[0]);
+
+            UpdateAllClient(Games[0]); // Not sure if we need this.
 
 
             //while (NetworkManager.Packets.Count > 0)
@@ -141,70 +139,6 @@ namespace WarlockTCPServer.Managers
             //}
         }
 
-        private static Task WaitForDraftPacket(string playerId)
-        {
-            // ================= Yes we know its hacky =====================
-            Packet draftPacket = null;
-
-            while (draftPacket == null)
-            {
-                draftPacket = NetworkManager.Packets.Where(x => x.CommandId == (short)CommandId.draft && x.PlayerId == playerId).FirstOrDefault();
-
-                Thread.Sleep(100);
-            }
-
-            if (draftPacket.CommandId == (short)CommandId.draft)
-            {
-                HandleCommand(draftPacket);
-            }
-            else
-            {
-                throw new Exception("There was an error in the order");
-            }
-
-            return Task.FromResult(0);
-        }
-
-        private static Task Combat()
-        {
-            var combatQueue = CombatManager.RunAttackPhase(Games[0]);
-
-            CombatPOCO combatPoco = new CombatPOCO()
-            {
-                RQE = combatQueue,
-                Game = Games[0]
-            };
-
-            Packet packet = new Packet()
-            {
-                CommandId = (short)CommandId.combat,
-                POCOJson = JsonConvert.SerializeObject(combatPoco)
-                // May need to add player
-            };
-
-            NetworkManager.SendPacketsAll(packet);
-
-            return Task.FromResult(0);
-        }
-
-        private static Task UpdateAllClient(GameState game)
-        {
-            GameStatePOCO gameStatePOCO = new GameStatePOCO()
-            {
-                Game = Games[0]
-            };
-
-            Packet packet = new Packet()
-            {
-                CommandId = (short)CommandId.gameStateUpdate,
-                POCOJson = JsonConvert.SerializeObject(gameStatePOCO)
-            };
-
-            NetworkManager.SendPacketsAll(packet);
-
-            return Task.FromResult(0);
-        }
-
         public static Task HandleCommand(Packet packet)
         {
             var commandId = (CommandId)packet.CommandId;
@@ -212,6 +146,7 @@ namespace WarlockTCPServer.Managers
             if (_commands.ContainsKey(commandId))
             {
                 _commands[commandId].Invoke(packet);
+                NetworkManager.Packets.Remove(packet);
             }
 
             return Task.FromResult(0);
@@ -379,6 +314,99 @@ namespace WarlockTCPServer.Managers
             // 1. Send a green flag to the players
             // 2. send the new updated state to the clients.
             // 3. Start the Combat phase?
+
+            return Task.FromResult(0);
+        }
+
+        private static Task WaitForDraftPacket(string playerId)
+        {
+            // ================= Yes we know its hacky =====================
+            Packet draftPacket = null;
+
+            while (draftPacket == null)
+            {
+                lock (NetworkManager.Packets)
+                {
+                    draftPacket = NetworkManager.Packets.Where(x => x.CommandId == (short)CommandId.draft && x.PlayerId == playerId).FirstOrDefault();
+                }
+                Thread.Sleep(100);
+            }
+
+            if (draftPacket.CommandId == (short)CommandId.draft)
+            {
+                HandleCommand(draftPacket);
+            }
+            else
+            {
+                throw new Exception("There was an error in the order");
+            }
+
+            return Task.FromResult(0);
+        }
+
+        private static Task Combat()
+        {
+            var combatQueue = CombatManager.RunAttackPhase(Games[0]);
+
+            CombatPOCO combatPoco = new CombatPOCO()
+            {
+                RQE = combatQueue,
+                Game = Games[0]
+            };
+
+            Packet packet = new Packet()
+            {
+                CommandId = (short)CommandId.combat,
+                POCOJson = JsonConvert.SerializeObject(combatPoco)
+                // May need to add player
+            };
+
+            NetworkManager.SendPacketsAll(packet);
+
+            return Task.FromResult(0);
+        }
+
+        private static Task UpdateAllClient(GameState game)
+        {
+            GameStatePOCO gameStatePOCO = new GameStatePOCO()
+            {
+                Game = Games[0]
+            };
+
+            Packet packet = new Packet()
+            {
+                CommandId = (short)CommandId.gameStateUpdate,
+                POCOJson = JsonConvert.SerializeObject(gameStatePOCO)
+            };
+
+            NetworkManager.SendPacketsAll(packet);
+
+            return Task.FromResult(0);
+        }
+
+        private static Task EndOfRoundLogic(GameState game)
+        {
+            int winAmount = 3;
+            if (Games[0].Player1.Score >= winAmount)
+            {
+                PlayerWins(Games[0].Player1);
+            }
+            else if (Games[0].Player2.Score >= winAmount)
+            {
+                PlayerWins(Games[0].Player2);
+            }
+
+            Games[0].RoundCounter++;
+
+            EndOfRoundManager.IncreaseMana(Games[0]);
+
+            return Task.FromResult(0);
+        }
+
+        private static Task PlayerWins(Player player)
+        {
+            Console.WriteLine($"{player} wins the game.");
+            NetworkManager.Running = false;
 
             return Task.FromResult(0);
         }

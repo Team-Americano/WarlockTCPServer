@@ -21,7 +21,7 @@ namespace WarlockTCPServer.Managers
         private static TcpListener _listener;
         
         private static int _timeStep = 30;
-        public static bool Running { get; private set; } = false;
+        public static bool Running { get; set; } = false;
 
         public static void Start()
         {
