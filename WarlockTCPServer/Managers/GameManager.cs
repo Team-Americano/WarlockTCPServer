@@ -23,6 +23,7 @@ namespace WarlockTCPServer.Managers
     {
         test = 42,
         hello = 100,
+        startUp = 101,
         draw = 200,
         draft = 300,
         acknowlegdeDraft = 301,
@@ -60,8 +61,9 @@ namespace WarlockTCPServer.Managers
             Games.Add(new GameState());
 
             Games[0].Player1.ClientId = NetworkManager.Clients[0].PlayerId;
+            Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
+
             Games[0].RoundCounter = 1;
-            // Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId; Commented out for testing
 
             Games[0].Player1.Mana = 0;
             Games[0].Player2.Mana = 0;
@@ -75,6 +77,27 @@ namespace WarlockTCPServer.Managers
             Games[0].Player1.Party = new List<Actor>();
             Games[0].Player2.Party = new List<Actor>();
             // =======================================================================
+
+            SendGameSetup(Games[0]);
+        }
+
+        public static Task SendGameSetup(GameState game)
+        {
+            GameSetupPOCO poco = new GameSetupPOCO()
+            {
+                Player1Id = Games[0].Player1.ClientId,
+                Player2Id = Games[0].Player2.ClientId
+            };
+
+            Packet packet = new Packet()
+            {
+                CommandId = (short)CommandId.startUp,
+                POCOJson = JsonConvert.SerializeObject(poco)
+            };
+
+            NetworkManager.SendPacketsAll(packet);
+
+            return Task.FromResult(0);
         }
 
         public static void RunGameLoop()

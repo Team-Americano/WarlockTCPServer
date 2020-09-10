@@ -15,7 +15,7 @@ namespace WarlockTCPServer.Managers
 
         private static int _bufferSize = 1024 * 4;
         public static List<Packet> Packets { get; set; }
-        private static int _maxPlayers = 1;
+        private static int _maxPlayers = 2;
         private static int _port = 28852;
         private static IPAddress _ipAddress = IPAddress.Any;
         private static TcpListener _listener;
