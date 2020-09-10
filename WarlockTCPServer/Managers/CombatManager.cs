@@ -4,7 +4,12 @@ using System.Linq;
 using System.Text;
 using WarlockTCPServer.GameLogic;
 using WarlockTCPServer.GameLogic.ActorComponents;
+using WarlockTCPServer.GameLogic.ActorComponents.ActorActions;
 using WarlockTCPServer.POCOs;
+using static WarlockTCPServer.Constants.DeckConstants;
+//using EffectEnum = WarlockTCPServer.Constants.DeckConstants.Effect;
+using Effect = WarlockTCPServer.GameLogic.ActorComponents.ActorActions.Effect;
+
 
 namespace WarlockTCPServer.Managers
 {
@@ -12,6 +17,12 @@ namespace WarlockTCPServer.Managers
     {
         public static RenderQueueEntry[] RunAttackPhase(GameState game)
         {
+            // var player1Party = PurgeParty(game.Player1.Party);
+            // var player2Party = PurgeParty(game.Player2.Party);
+
+            AssignEffects(game.Player1.Party);
+            AssignEffects(game.Player2.Party);
+
             // TODO: Return a full queue of render commands
             List<RenderQueueEntry> RQE = new List<RenderQueueEntry>();
             // pass in a boolean for who goes first, this is temporarily hardcoded
@@ -129,6 +140,41 @@ namespace WarlockTCPServer.Managers
                 game.Player1.Score++;
             else if (player1AliveActors < player2AliveActors)
                 game.Player2.Score++;
+        }
+
+        private static void AssignEffects(List<Actor> party)
+        {
+            foreach (var actor in party)
+            {
+                // attaching effects
+                List<Effect> actorEffects = new List<Effect>();
+                var characterEffectDetailsList = CharacterEffects[(Characters)actor.CharacterId];
+                foreach (var effectDetailsReference in characterEffectDetailsList)
+                {
+                    var effectDetails = Effects[effectDetailsReference];
+                    Targeter targeter = effectDetails.targeter;
+                    AppliedEffect appliedEffect = effectDetails.appliedEffect;
+                    string animation = effectDetails.animation;
+                    Effect effect = new Effect(targeter, appliedEffect, animation);
+                    actorEffects.Add(effect);
+                }
+                Effect[] effectArray = actorEffects.ToArray();
+                ActorAction2 actorAction = new ActorAction2(effectArray);
+
+                actor.ActorAction = actorAction;
+            }
+        }
+
+        private static List<Actor> PurgeParty(IEnumerable<Actor> actors)
+        {
+            List<Actor> purged = new List<Actor>();
+            foreach (var actor in actors)
+            {
+                if (actor != null)
+                    if (actor.Name != "")
+                        purged.Add(actor);
+            }
+            return purged;
         }
     }
 }

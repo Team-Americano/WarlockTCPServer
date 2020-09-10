@@ -39,7 +39,7 @@ namespace WarlockTCPServer.Constants
             Slime,              // Aberrant Brute
             Gazer,              // Aberrant Sorcerer
             Morlock,            // Aberrant Brute
-            Deep_Hound,         // Aberrrant Sorcerer
+            Deep_Hound,         // Aberrant Sorcerer
             Mind_Eater,         // Aberrant Stalker
             Deep_Tyrant,        // Aberrant Sorcerer
             // Aquatic

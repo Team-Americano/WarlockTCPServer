@@ -61,7 +61,7 @@ namespace WarlockTCPServer.Managers
             Games.Add(new GameState());
 
             Games[0].Player1.ClientId = NetworkManager.Clients[0].PlayerId;
-            Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
+            //Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
 
             Games[0].RoundCounter = 1;
 
@@ -370,7 +370,6 @@ namespace WarlockTCPServer.Managers
 
             return Task.FromResult(0);
         }
-
 
         private static Task UpdateAllClient(GameState game)
         {
