@@ -41,6 +41,7 @@ namespace WarlockTCPServer.Builders
             precision.CurrentValue = (short)(originStats.precision + classStats.precision + rarityStats.precision);
             manaCost.BaseValue = rarityStats.manaCost;
             manaCost.CurrentValue = rarityStats.manaCost;
+            short characterId = (short)cardChoice;
 
             // attaching effects
             List<Effect> actorEffects = new List<Effect>();
@@ -57,7 +58,7 @@ namespace WarlockTCPServer.Builders
             Effect[] effectArray = actorEffects.ToArray();
             ActorAction2 actorAction = new ActorAction2(effectArray);
 
-            Actor actor = new Actor(cardId, origin, @class, name, health, defense, attack, speed, precision, manaCost, rarity, actorAction);
+            Actor actor = new Actor(cardId, origin, @class, name, health, defense, attack, speed, precision, manaCost, rarity, actorAction, characterId);
             return actor;
         }
 

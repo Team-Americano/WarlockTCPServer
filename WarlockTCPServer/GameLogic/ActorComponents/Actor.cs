@@ -30,6 +30,9 @@ namespace WarlockTCPServer.GameLogic.ActorComponents
         public string Rarity { get; set; }
         public ActorAction2 ActorAction { get; set; }
         public bool HasGone { get; set; } = false;
+        [JsonProperty("CharacterId")]
+        public short CharacterId { get; set; }
+
 
         public Actor()
         {
@@ -49,7 +52,8 @@ namespace WarlockTCPServer.GameLogic.ActorComponents
             Attribute precision,
             Attribute manaCost,
             string rarity,
-            ActorAction2 actorAction
+            ActorAction2 actorAction,
+            short characterId
         )
         {
             CardId = cardId;
@@ -64,6 +68,7 @@ namespace WarlockTCPServer.GameLogic.ActorComponents
             ManaCost = manaCost;
             Rarity = rarity;
             ActorAction = actorAction;
+            CharacterId = characterId;
         }
     }
 }
