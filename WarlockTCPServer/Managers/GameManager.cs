@@ -61,7 +61,7 @@ namespace WarlockTCPServer.Managers
             Games.Add(new GameState());
 
             Games[0].Player1.ClientId = NetworkManager.Clients[0].PlayerId;
-            //Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
+            Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
 
             Games[0].RoundCounter = 1;
 
@@ -232,6 +232,8 @@ namespace WarlockTCPServer.Managers
 
             if (playerId != null)
             {
+                Console.WriteLine(packet.CommandId);
+                Console.WriteLine(packet.POCOJson);
                 NetworkManager.SendPacket(client.TcpClient, packet);
             }
             else
@@ -366,6 +368,8 @@ namespace WarlockTCPServer.Managers
                 // May need to add player
             };
 
+            Console.WriteLine(packet.CommandId);
+            Console.WriteLine(packet.POCOJson);
             NetworkManager.SendPacketsAll(packet);
 
             return Task.FromResult(0);
@@ -388,6 +392,8 @@ namespace WarlockTCPServer.Managers
                 POCOJson = JsonConvert.SerializeObject(gameStatePOCO)
             };
 
+            Console.WriteLine(packet.CommandId);
+            Console.WriteLine(packet.POCOJson);
             NetworkManager.SendPacketsAll(packet);
 
             return Task.FromResult(0);

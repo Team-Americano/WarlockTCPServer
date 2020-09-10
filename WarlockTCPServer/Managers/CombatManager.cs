@@ -33,6 +33,8 @@ namespace WarlockTCPServer.Managers
             List<Actor> friendlyParty = new List<Actor>();
             List<Actor> enemyParty = new List<Actor>();
 
+            Console.WriteLine("Start Combat");
+
             while (p1Actor != null || p2Actor != null)
             {
                 if (p1Actor == null)
@@ -87,9 +89,12 @@ namespace WarlockTCPServer.Managers
                 p1Actor = GetNextActor(game.Player1.Party);
                 p2Actor = GetNextActor(game.Player2.Party);
 
+                Console.WriteLine(nextActor.Name + " is acting");
             }
             AssignPoints(game);
             ResetStats(game);
+
+            Console.WriteLine("End Of Combat");
             return RQE.ToArray();
         }
 

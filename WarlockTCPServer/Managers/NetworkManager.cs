@@ -19,7 +19,7 @@ namespace WarlockTCPServer.Managers
         private static int _port = 28852;
         private static IPAddress _ipAddress = IPAddress.Any;
         private static TcpListener _listener;
-        
+
         private static int _timeStep = 30;
         public static bool Running { get; set; } = false;
 
@@ -38,9 +38,10 @@ namespace WarlockTCPServer.Managers
 
         public static void FindClients()
         {
+            Console.WriteLine("Waiting for clients...");
+
             while (Clients.Count != _maxPlayers)
             {
-                Console.WriteLine("Waiting for clients...");
 
                 if (_listener.Pending())
                 {
@@ -55,7 +56,7 @@ namespace WarlockTCPServer.Managers
                 Thread.Sleep(_timeStep);
             }
 
-            if(Clients.Count == _maxPlayers)
+            if (Clients.Count == _maxPlayers)
             {
                 GameManager.SetupNewGame();
             }
@@ -116,7 +117,9 @@ namespace WarlockTCPServer.Managers
                     client.GetStream().Read(incoming, 0, incoming.Length);
 
                     string incomingStr = Encoding.UTF8.GetString(incoming);
+
                     Packet packet = JsonConvert.DeserializeObject<Packet>(incomingStr);
+                    Console.WriteLine(packet.POCOJson);
 
                     Packets.Add(packet);
                 }
