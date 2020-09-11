@@ -140,12 +140,16 @@ namespace WarlockTCPServer.Managers
                 WaitForDraftPacket(Games[0].Player1.ClientId);
             }
 
+            Thread.Sleep(100);
             UpdateAllClient(Games[0]);
+            Thread.Sleep(100);
 
             Combat();
 
+            Thread.Sleep(100);
             EndOfRoundLogic(Games[0]);
 
+            Thread.Sleep(100);
             UpdateAllClient(Games[0]); // Not sure if we need this.
 
 
