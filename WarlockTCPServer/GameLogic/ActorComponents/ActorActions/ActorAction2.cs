@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using static WarlockTCPServer.Constants.ActorTargeters;
 using static WarlockTCPServer.Constants.ActorAppliedEffects;
+using WarlockTCPServer.POCOs;
 
 namespace WarlockTCPServer.GameLogic.ActorComponents.ActorActions
 {
@@ -17,22 +18,42 @@ namespace WarlockTCPServer.GameLogic.ActorComponents.ActorActions
 
         // TODO: Return collection of render commands
         // TODO: Add try/catch statement?
-        public IEnumerable<object> Execute(Actor source, IEnumerable<Actor> friendlyParty, IEnumerable<Actor> enemyParty)
+        public RenderQueueEntry[] Execute(Actor source, IEnumerable<Actor> friendlyParty, IEnumerable<Actor> enemyParty)
         {
-            var commands = new List<object>(); // command objects
+            var rqes = new List<RenderQueueEntry>();
+
+            var playerReadyEntry = new RenderQueueEntry()
+            {
+                TargetCardIds = new[] { source.CardId },
+                Animation = "ReadyAttack"
+            };
+
+            rqes.Add(playerReadyEntry);
+
+            var targetIds = new List<short>();
+
             foreach (var effect in Effects)
             {
                 var newTargets = Targeters[effect.Targeter](friendlyParty, enemyParty);
+                
                 foreach (var newTarget in newTargets)
                 {
                     if (newTarget != null)
                     {
-                        var renderCommand = AppliedEffects[effect.AppliedEffect](source, newTarget);
-                        commands.Add(renderCommand);
+                        targetIds.Add(AppliedEffects[effect.AppliedEffect](source, newTarget));
                     }
                 }
+
+                var newRQE = new RenderQueueEntry()
+                {
+                    TargetCardIds = targetIds.ToArray(),
+                    Animation = effect.Animation
+                };
+
+                rqes.Add(newRQE);
             }
-            return commands;
+
+            return rqes.ToArray();
         }
     }
 }

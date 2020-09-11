@@ -6,6 +6,7 @@ namespace WarlockTCPServer.Constants
     public static class ActorTargeters
     {
         public delegate IEnumerable<Actor> Targeter(IEnumerable<Actor> friendlyParty, IEnumerable<Actor> enemyParty);
+
         #region Targeter Methods
         public static IEnumerable<Actor> FirstAlive(IEnumerable<Actor> friendlyParty, IEnumerable<Actor> enemyParty)
         {

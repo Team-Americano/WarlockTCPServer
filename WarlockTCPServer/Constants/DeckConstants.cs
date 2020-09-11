@@ -39,7 +39,7 @@ namespace WarlockTCPServer.Constants
             Slime,              // Aberrant Brute
             Gazer,              // Aberrant Sorcerer
             Morlock,            // Aberrant Brute
-            Deep_Hound,         // Aberrrant Sorcerer
+            Deep_Hound,         // Aberrant Sorcerer
             Mind_Eater,         // Aberrant Stalker
             Deep_Tyrant,        // Aberrant Sorcerer
             // Aquatic
@@ -180,9 +180,9 @@ namespace WarlockTCPServer.Constants
             BasicAttack = 1
         }
 
-        public static Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect)> Effects = new Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect)>
+        public static Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect, string animation)> Effects = new Dictionary<Effect, (Targeter targeter, AppliedEffect appliedEffect, string animation)>
         {
-            { Effect.BasicAttack, (Targeter.FirstAlive, AppliedEffect.StandardDamage) }
+            { Effect.BasicAttack, (Targeter.FirstAlive, AppliedEffect.StandardDamage, "BasicAttack" ) }
         };
         #endregion
 
