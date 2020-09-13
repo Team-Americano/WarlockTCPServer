@@ -3,9 +3,9 @@
 - [User Stories and Requirements](Requirements.md)
 
 ---
-### We are deployed on Azure! TODO
+### We are deployed on Azure!
 
-[project url here]
+![Azure Deployment on VM](https://github.com/Team-Americano/WarlockTCPServer/blob/master/WarlockTCPServerScreen.png?raw=true)
 
 ---
 ## TCP Server and Unity Application TODO
@@ -63,12 +63,15 @@ Unit testing is included in the AmandaFE/FrontendTesting project using the xUnit
 ![Game End](https://via.placeholder.com/500x250)
 
 ---
-## Data Flow TODO
+## Data Flow
 ![Data Flow Diagram](/Assets/img/Flowchart.png)
 
 ---
 
-## UML Diagrams TODO
+## UML Diagrams
+![Server UML]()
+
+![Client UML]()
 
 ---
 
