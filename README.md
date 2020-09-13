@@ -50,28 +50,25 @@ Unit testing is included in the AmandaFE/FrontendTesting project using the xUnit
 
 ## Usage TODO
 
-### Game Lobby
-![Game Lobby](https://via.placeholder.com/500x250)
+### Main Menu
+![Main Menu](https://via.placeholder.com/500x250)
 
-### Start of Game
-![Start of Game](https://via.placeholder.com/500x250)
+### Draft Phase
+![Draft Phase](https://via.placeholder.com/500x250)
 
-### Mid Game
-![Mid Game](https://via.placeholder.com/500x250)
-
-### Game End
-![Game End](https://via.placeholder.com/500x250)
+### Combat Phase
+![Combat](https://via.placeholder.com/500x250)
 
 ---
 ## Data Flow
-![Data Flow Diagram](/Assets/img/Flowchart.png)
+![Data Flow Diagram](https://github.com/Team-Americano/WarlockTCPServer/blob/master/Data%20Flow.png?raw=true)
 
 ---
 
 ## UML Diagrams
-![Server UML]()
+![Server UML](https://github.com/Team-Americano/WarlockTCPServer/blob/master/Warlock_Server_UML.png?raw=true)
 
-![Client UML]()
+![Client UML](https://github.com/Team-Americano/WarlockTCPServer/blob/master/Warlock_ClientUML.png?raw=true)
 
 ---
 
