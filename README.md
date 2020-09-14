@@ -28,36 +28,38 @@ Microsoft Visual Studio Community 2017 (Version 15.5.7)
 Clone this repository to your local machine.
 
 ```
-$ git clone https://github.com/YourRepo/YourProject.git
+$ git clone https://github.com/Team-Americano/WarlockTCPServer.git
 ```
-Once downloaded, you can either use the dotnet CLI utilities or Visual Studio 2017 (or greater) to build the web application. The solution file is located in the AmandaFE subdirectory at the root of the repository.
+Once downloaded, you can either use the dotnet CLI utilities or Visual Studio 2017 (or greater) to build the web application. The solution file is located in the WarlockTCPServer subdirectory at the root of the repository.
 ```
-cd YourRepo/YourProject
+cd Team-Americano/WarlockTCPServer
 dotnet build
 ```
-The dotnet tools will automatically restore any NuGet dependencies. Before running the application, the provided code-first migration will need to be applied to the SQL server of your choice configured in the /AmandaFE/AmandaFE/appsettings.json file. This requires the Microsoft.EntityFrameworkCore.Tools NuGet package and can be run from the NuGet Package Manager Console:
+The dotnet tools will automatically restore any NuGet dependencies. From the command line, the following will start an instance of the server:
 ```
-Update-Database
+cd Team-Americano/WarlockTCPServer/bin/x64/Release/netcoreapp3.1
+./WarlockTCPServer.exe
 ```
-Once the database has been created, the application can be run. Options for running and debugging the application using IIS Express or Kestrel are provided within Visual Studio. From the command line, the following will start an instance of the Kestrel server to host the application:
+You should start the server on a computer that is publicly accessible to one or more Warlock clients, which can be found here: [Click for Warlock client repo](https://github.com/Team-Americano/WarlockTCPClient). To configure the Warlock client, you will need to clone the repository.
 ```
-cd YourRepo/YourProject
-dotnet run
+$ git clone https://github.com/Team-Americano/WarlockTCPClient.git
 ```
-Unit testing is included in the AmandaFE/FrontendTesting project using the xUnit test framework. Tests have been provided for models, view models, controllers, and utility classes for the application.
+After cloning the repo, you need to open the project in Unity using version 2019.4.9f1 or later. First, you require two clients on different machines that are configured to the public-facing IP of the machine running your server. This can be changed in the ```_hostname``` field of the WarlockTCPClient's NetworkManager.cs file. You can then run the client from the Unity editor by pressing the play button at the top or build the client by navigating to File -> Build and Run for a standalone build.
+
+Lastly, unit testing is included in the WarlockTCPServer/WarlockTCPServerUnitTests project using the xUnit test framework. Tests have been provided for the model of the application.
 
 ---
 
 ## Usage TODO
 
 ### Main Menu
-![Main Menu](https://via.placeholder.com/500x250)
+![Main Menu](https://github.com/Team-Americano/WarlockTCPServer/blob/master/MainMenu.png?raw=true)
 
 ### Draft Phase
-![Draft Phase](https://via.placeholder.com/500x250)
+![Draft Phase](https://github.com/Team-Americano/WarlockTCPServer/blob/master/DraftPhase.png?raw=true)
 
 ### Combat Phase
-![Combat](https://via.placeholder.com/500x250)
+![Combat](https://github.com/Team-Americano/WarlockTCPServer/blob/master/CombatPhase.png?raw=true)
 
 ---
 ## Data Flow
@@ -81,7 +83,3 @@ Unit testing is included in the AmandaFE/FrontendTesting project using the xUnit
 - Bade Habib
 - Peyton Cysewski
 - Trevor Stubbs
-
----
-
-For more information on Markdown: https://www.markdownguide.org/cheat-sheet
