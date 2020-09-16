@@ -8,9 +8,6 @@
 ![Azure Deployment on VM](https://github.com/Team-Americano/WarlockTCPServer/blob/master/WarlockTCPServerScreen.png?raw=true)
 
 ---
-## TCP Server and Unity Application TODO
-
----
 
 ## Tools Used
 Microsoft Visual Studio Community 2017 (Version 15.5.7)
