@@ -47,7 +47,7 @@ Lastly, unit testing is included in the WarlockTCPServer/WarlockTCPServerUnitTes
 
 ---
 
-## Usage TODO
+## Usage
 
 ### Main Menu
 ![Main Menu](https://github.com/Team-Americano/WarlockTCPServer/blob/master/MainMenu.png?raw=true)
