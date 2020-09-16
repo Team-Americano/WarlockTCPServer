@@ -20,7 +20,7 @@ Microsoft Visual Studio Community 2017 (Version 15.5.7)
 
 ---
 
-## Getting Started TODO
+## Getting Started
 
 Clone this repository to your local machine.
 
