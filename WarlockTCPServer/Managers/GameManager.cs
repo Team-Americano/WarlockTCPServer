@@ -30,6 +30,7 @@ namespace WarlockTCPServer.Managers
         partyReposition = 400,
         acknowlegdeReposition = 401,
         combat = 500,
+        combatEnd = 501,
         gameStateUpdate = 600
     }
 
@@ -48,7 +49,7 @@ namespace WarlockTCPServer.Managers
                 { CommandId.hello, Hello },
                 //{ CommandId.draw, Draw },
                 { CommandId.draft, Draft },
-                { CommandId.acknowlegdeDraft, AcknowlegdeDraft },
+                { CommandId.acknowlegdeDraft, AcknowledgeDraft },
                 { CommandId.partyReposition, PartyReposition },
                 { CommandId.acknowlegdeReposition, AcknowledgeReposition }
             };
@@ -140,16 +141,14 @@ namespace WarlockTCPServer.Managers
                 WaitForDraftPacket(Games[0].Player1.ClientId);
             }
 
-            Thread.Sleep(100);
             UpdateAllClient(Games[0]);
-            Thread.Sleep(100);
 
             Combat();
+            WaitForCombatEnd(Games[0].Player1.ClientId);
+            WaitForCombatEnd(Games[0].Player2.ClientId);
 
-            Thread.Sleep(100);
             EndOfRoundLogic(Games[0]);
 
-            Thread.Sleep(100);
             UpdateAllClient(Games[0]); // Not sure if we need this.
 
 
@@ -264,7 +263,7 @@ namespace WarlockTCPServer.Managers
             return Task.FromResult(0);
         }
 
-        public static Task AcknowlegdeDraft(Packet packet)
+        public static Task AcknowledgeDraft(Packet packet)
         {
             // ANTI-CHEATING
             // =================== Acknowledge Draft ============
@@ -371,6 +370,25 @@ namespace WarlockTCPServer.Managers
             };
 
             NetworkManager.SendPacketsAll(packet);
+
+            return Task.FromResult(0);
+        }
+
+        private static Task WaitForCombatEnd(string playerId)
+        {
+            Packet combatEndPacket = null;
+
+            while (combatEndPacket == null)
+            {
+                lock (NetworkManager.Packets)
+                {
+                    combatEndPacket = NetworkManager.Packets.Where(x => x.CommandId == (short)CommandId.combatEnd && x.PlayerId == playerId).FirstOrDefault();
+                }
+
+                NetworkManager.ReceivePackets();
+
+                Thread.Sleep(100);
+            }
 
             return Task.FromResult(0);
         }

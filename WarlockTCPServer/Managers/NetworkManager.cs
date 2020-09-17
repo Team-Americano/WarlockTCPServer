@@ -12,9 +12,9 @@ namespace WarlockTCPServer.Managers
     public static class NetworkManager
     {
         public static List<Client> Clients { get; set; }
+        public static List<Packet> Packets { get; set; }
 
         private static int _bufferSize = 1024 * 4;
-        public static List<Packet> Packets { get; set; }
         private static int _maxPlayers = 2;
         private static int _port = 28852;
         private static IPAddress _ipAddress = IPAddress.Any;
@@ -93,16 +93,6 @@ namespace WarlockTCPServer.Managers
         {
             DisconnectClientAll();
             _listener.Stop();
-        }
-
-        private static bool IsHealthy()
-        {
-            return Running;
-        }
-
-        private static void OnMaintenanceScheduled(DateTimeOffset time)
-        {
-            Console.WriteLine("Maintenance scheduled at " + time.ToString());
         }
 
         public static void ReceivePackets()
