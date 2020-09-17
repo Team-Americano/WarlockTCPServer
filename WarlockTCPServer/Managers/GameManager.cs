@@ -62,12 +62,12 @@ namespace WarlockTCPServer.Managers
             Games.Add(new GameState());
 
             Games[0].Player1.ClientId = NetworkManager.Clients[0].PlayerId;
-            //Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
+            Games[0].Player2.ClientId = NetworkManager.Clients[1].PlayerId;
 
             Games[0].RoundCounter = 1;
 
             Games[0].Player1.Mana = 5;
-            Games[0].Player2.Mana = 0;
+            Games[0].Player2.Mana = 5;
 
             Games[0].Player1.Score = 0;
             Games[0].Player2.Score = 0;
@@ -95,7 +95,7 @@ namespace WarlockTCPServer.Managers
                 CommandId = (short)CommandId.startUp,
                 POCOJson = JsonConvert.SerializeObject(poco)
             };
-
+            
             NetworkManager.SendPacketsAll(packet);
 
             return Task.FromResult(0);
