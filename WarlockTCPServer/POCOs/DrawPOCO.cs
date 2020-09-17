@@ -14,5 +14,6 @@ namespace WarlockTCPServer.POCOs
 
         [JsonProperty("Round")]
         public short Round;
+
     }
 }
