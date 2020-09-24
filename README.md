@@ -1,5 +1,8 @@
 # Project Warlock
 
+"Warlock" is a turn-based multiplayer card game where players summon monsters drawn from a deck. There are two parts to Warlock; the server and the client. The server is a C# TCP client that must be hosted on a publicly accessible machine. The client was developed in Unity and allows players to connect to the server.
+
+---
 - [User Stories and Requirements](Requirements.md)
 
 ---
